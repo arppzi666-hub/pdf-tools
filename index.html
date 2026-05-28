@@ -354,12 +354,12 @@ footer a{color:var(--sub);text-decoration:underline}
   <p style="margin-top:8px"><a href="#" data-i18n="footer.privacy">Privacy Policy</a> &middot; <a href="#" data-i18n="footer.terms">Terms of Service</a> &middot; <a href="#" data-i18n="footer.contact">Contact</a></p>
 </footer>
 
-<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
-<script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+<script defer src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" onload="pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script defer src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
 <script>
 // ===== i18n =====
 const i18n = {
@@ -428,7 +428,7 @@ function applyLanguage() {
 
 document.getElementById('lang-toggle').addEventListener('click', () => {
   lang = lang === 'zh' ? 'en' : 'zh';
-  localStorage.setItem('pdf-tools-lang', lang);
+  try { localStorage.setItem('pdf-tools-lang', lang); } catch(e) {}
   applyLanguage();
 });
 
@@ -474,7 +474,7 @@ function setupDropzone(dropId, inputId, onFiles) {
   drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('dragover');if(e.dataTransfer.files.length)onFiles(e.dataTransfer.files);});
   input.addEventListener('change',()=>{if(input.files.length)onFiles(input.files);});
 }
-pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+try { pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'; } catch(e) {}
 </script>
 
 <!-- ===== Merge ===== -->
