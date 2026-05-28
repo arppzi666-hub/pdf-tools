@@ -401,11 +401,15 @@ function t(key) {
 function applyLanguage() {
   document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
   document.title = lang === 'zh' ? 'PDFtools - 免费在线PDF工具' : 'PDFtools - Free Online PDF Tools';
-  document.querySelector('meta[name="description"]').content = lang === 'zh'
+
+  const metaDesc = document.querySelector('meta[name="description"]');
+  if (metaDesc) metaDesc.content = lang === 'zh'
     ? '免费在线PDF工具：合并、分割、压缩、旋转、解锁、PDF转图片、Word转PDF、PDF转Word。无需上传，所有处理在浏览器中完成。'
     : 'Free online PDF tools. Merge, split, compress, rotate, unlock, PDF to JPG, Word to PDF, PDF to Word. No upload needed — all processing in your browser.';
-  document.querySelector('meta[property="og:title"]').content = lang === 'zh' ? 'PDFtools - 免费在线PDF工具' : 'PDFtools - Free Online PDF Tools';
-  document.querySelector('meta[property="og:description"]').content = lang === 'zh' ? '免费PDF工具，所有处理在浏览器中完成 — 无需上传，无水印。' : 'Free PDF tools. All processing in your browser — no uploads, no watermarks.';
+  const ogTitle = document.querySelector('meta[property="og:title"]');
+  if (ogTitle) ogTitle.content = lang === 'zh' ? 'PDFtools - 免费在线PDF工具' : 'PDFtools - Free Online PDF Tools';
+  const ogDesc = document.querySelector('meta[property="og:description"]');
+  if (ogDesc) ogDesc.content = lang === 'zh' ? '免费PDF工具，所有处理在浏览器中完成 — 无需上传，无水印。' : 'Free PDF tools. All processing in your browser — no uploads, no watermarks.';
 
   document.querySelectorAll('[data-i18n]').forEach(el => {
     el.textContent = t(el.dataset.i18n);
