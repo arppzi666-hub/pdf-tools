@@ -24,8 +24,9 @@ nav{display:flex;gap:2px;flex:1;flex-wrap:wrap;overflow-x:auto}
 nav button{padding:8px 12px;border:none;background:0;color:var(--sub);font-size:13px;cursor:pointer;border-radius:8px;font-weight:500;transition:.15s;white-space:nowrap}
 nav button:hover{background:#f1f5f9;color:var(--text)}
 nav button.active{background:#eff6ff;color:var(--pri)}
-.lang-btn{padding:7px 14px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;transition:.15s}
+.lang-btn{padding:7px 14px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;transition:.15s;flex-shrink:0;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none}
 .lang-btn:hover{background:#f1f5f9;border-color:var(--pri)}
+.lang-btn:active{background:#eff6ff}
 .ad-top{text-align:center;padding:16px 0 0;min-height:90px}
 main{max-width:880px;margin:0 auto;padding:24px 16px 48px}
 .hero{text-align:center;padding:32px 0 24px}
@@ -402,39 +403,27 @@ function applyLanguage() {
   document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
   document.title = lang === 'zh' ? 'PDFtools - 免费在线PDF工具' : 'PDFtools - Free Online PDF Tools';
 
-  const metaDesc = document.querySelector('meta[name="description"]');
-  if (metaDesc) metaDesc.content = lang === 'zh'
-    ? '免费在线PDF工具：合并、分割、压缩、旋转、解锁、PDF转图片、Word转PDF、PDF转Word。无需上传，所有处理在浏览器中完成。'
-    : 'Free online PDF tools. Merge, split, compress, rotate, unlock, PDF to JPG, Word to PDF, PDF to Word. No upload needed — all processing in your browser.';
-  const ogTitle = document.querySelector('meta[property="og:title"]');
-  if (ogTitle) ogTitle.content = lang === 'zh' ? 'PDFtools - 免费在线PDF工具' : 'PDFtools - Free Online PDF Tools';
-  const ogDesc = document.querySelector('meta[property="og:description"]');
-  if (ogDesc) ogDesc.content = lang === 'zh' ? '免费PDF工具，所有处理在浏览器中完成 — 无需上传，无水印。' : 'Free PDF tools. All processing in your browser — no uploads, no watermarks.';
-
   document.querySelectorAll('[data-i18n]').forEach(el => {
-    el.textContent = t(el.dataset.i18n);
+    var key = el.getAttribute('data-i18n');
+    var val = t(key);
+    if (val && val !== key) el.textContent = val;
   });
   document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-    el.placeholder = t(el.dataset.i18nPlaceholder);
+    var key = el.getAttribute('data-i18n-placeholder');
+    var val = t(key);
+    if (val && val !== key) el.placeholder = val;
   });
 
-  document.getElementById('lang-toggle').textContent = lang === 'zh' ? 'English' : '中文';
-  document.getElementById('lang-toggle').title = lang === 'zh' ? 'Switch to English' : '切换到中文';
+  var toggleBtn = document.getElementById('lang-toggle');
+  toggleBtn.textContent = lang === 'zh' ? 'English' : '中文';
+  toggleBtn.title = lang === 'zh' ? 'Switch to English' : '切换到中文';
 
-  // Update dynamic elements
-  const qs = document.getElementById('compress-quality');
-  if (qs) {
-    const labels = { 1: t('compress.qualityMax'), 2: t('compress.qualityMed'), 3: t('compress.qualityLight') };
-    const ql = document.getElementById('quality-label');
-    if (ql) ql.textContent = labels[qs.value] || labels[2];
-    const src = document.getElementById('compress-orig-size');
-    if (src && src.dataset.origText) src.previousSibling.textContent = t('compress.originalSize') + ' ';
+  var ql = document.getElementById('quality-label');
+  if (ql) {
+    var qs = document.getElementById('compress-quality');
+    var labels = {'1': t('compress.qualityMax'), '2': t('compress.qualityMed'), '3': t('compress.qualityLight')};
+    ql.textContent = labels[qs ? qs.value : '2'] || labels['2'];
   }
-
-  // Restore original button texts for any that were changed during processing
-  document.querySelectorAll('[data-i18n-default]').forEach(el => {
-    el.textContent = t(el.dataset.i18nDefault);
-  });
 }
 
 document.getElementById('lang-toggle').addEventListener('click', () => {
