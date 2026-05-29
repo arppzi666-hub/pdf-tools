@@ -325,7 +325,7 @@ footer a{color:var(--sub);text-decoration:underline}
   <div class="tool-section" id="tool-pdf2word">
     <div class="tool-panel">
       <div class="tool-title" data-i18n="pdf2word.title">PDF to Word</div>
-      <div class="tool-desc" data-i18n="pdf2word.desc">Extract text from your PDF into an editable Word document (.docx). Works for text-based PDFs (Word exports, invoices, web-generated PDFs). Scanned/image-based PDFs require OCR and are not supported.</div>
+      <div class="tool-desc" data-i18n="pdf2word.desc">Convert PDF pages to a Word document (.docx) with exact layout preserved. Each page is rendered as a high-resolution image — tables, formatting, fonts, and images stay exactly as they appear.</div>
       <div class="dropzone" id="pdf2word-drop">
         <div class="icon">📋</div>
         <div class="main-text" data-i18n="pdf2word.dropMain">Choose a PDF to convert</div>
@@ -367,7 +367,7 @@ var _i18n = {
     rotate: { title: 'Rotate PDF', desc: 'Rotate individual pages or the entire PDF. Select rotation angle per page.', dropMain: 'Choose a PDF to rotate', dropSub: 'Click to select or drag & drop', defaultRot: 'Default rotation:', applyAll: 'Apply to All', btnRotate: 'Rotate & Download', resultTitle: 'Rotation Complete', btnDownload: 'Download Rotated PDF', info: 'Rotated {0} pages', rotating: 'Rotating…', fail: 'Rotate failed: ', label: 'Page {0}', morePages: '+{0} more pages (rotation applies to all)' },
     unlock: { title: 'Unlock PDF', desc: 'Remove password protection and restrictions from your PDF. Only for PDFs you own.', dropMain: 'Choose a PDF to unlock', dropSub: 'PDFs with owner restrictions can be unlocked instantly', pwLabel: 'This PDF requires a password:', pwPlaceholder: 'PDF password', btnUnlock: 'Unlock PDF', resultTitle: 'PDF Unlocked', btnDownload: 'Download Unlocked PDF', info: 'Restrictions removed — {0}', unlocking: 'Unlocking…', wrongPw: 'Wrong password or unable to decrypt', fail: 'Unlock failed: ' },
     word2pdf: { title: 'Word to PDF', desc: 'Convert Word documents (.docx) to PDF. Preview first, then download as PDF via browser print.', dropMain: 'Choose a Word document', dropSub: '.docx files only', btnDownload: 'Download as PDF', printHint: 'Opens browser print dialog — choose "Save as PDF"', popupBlocked: 'Pop-up blocked! Please allow pop-ups for this site to download PDF.', readFail: 'Failed to read Word document: ' },
-    pdf2word: { title: 'PDF to Word', desc: 'Extract text from your PDF into an editable Word document (.docx). Works for text-based PDFs (Word exports, invoices, web-generated PDFs). Scanned/image-based PDFs require OCR and are not supported.', dropMain: 'Choose a PDF to convert', dropSub: 'Extracts text content into a .docx file', resultTitle: 'Conversion Complete', btnDownload: 'Download Word Document (.docx)', info: 'Extracted text from {0} pages', fail: 'PDF to Word failed: ', morePages: '+{0} more pages' },
+    pdf2word: { title: 'PDF to Word', desc: 'Convert PDF pages to a Word document (.docx) with exact layout preserved. Each page is rendered as a high-resolution image — tables, formatting, fonts, and images stay exactly as they appear.', dropMain: 'Choose a PDF to convert', dropSub: 'Each page is rendered as a high-res image, preserving original layout', resultTitle: 'Conversion Complete', btnDownload: 'Download Word Document (.docx)', info: 'Converted {0} pages to Word', fail: 'PDF to Word failed: ', morePages: '+{0} more pages' },
     footer: { local: 'All processing is done locally in your browser — your files are never uploaded to any server.', privacy: 'Privacy Policy', terms: 'Terms of Service', contact: 'Contact' }
   },
   zh: {
@@ -380,7 +380,7 @@ var _i18n = {
     rotate: { title: '旋转 PDF', desc: '旋转 PDF 中的页面，可为每页单独设置旋转角度。', dropMain: '选择要旋转的 PDF', dropSub: '点击选择或拖拽文件', defaultRot: '默认角度：', applyAll: '全部应用', btnRotate: '旋转并下载', resultTitle: '旋转完成', btnDownload: '下载旋转文件', info: '已旋转 {0} 页', rotating: '旋转中…', fail: '旋转失败：', label: '第 {0} 页', morePages: '+ 还有 {0} 页（旋转将应用到所有页面）' },
     unlock: { title: '解锁 PDF', desc: '移除 PDF 的密码保护和使用限制。仅用于您拥有权限的文件。', dropMain: '选择要解锁的 PDF', dropSub: '设有密码保护的 PDF 请输入密码解锁', pwLabel: '请输入 PDF 密码：', pwPlaceholder: '输入密码', btnUnlock: '开始解锁', resultTitle: '解锁完成', btnDownload: '下载解锁文件', info: '密码保护已移除 — {0}', unlocking: '解锁中…', wrongPw: '密码错误，请重试', fail: '解锁失败：' },
     word2pdf: { title: 'Word 转 PDF', desc: '将 Word 文档 (.docx) 转换为 PDF。先预览内容，再通过浏览器打印保存。', dropMain: '选择 Word 文档', dropSub: '仅支持 .docx 格式', btnDownload: '下载为 PDF', printHint: '将弹出打印窗口，选择「另存为 PDF」即可保存', popupBlocked: '弹窗被拦截！请在浏览器设置中允许本站弹窗。', readFail: '无法读取 Word 文档：' },
-    pdf2word: { title: 'PDF 转 Word', desc: '提取 PDF 中的文字内容，保存为可编辑的 Word 文档。适用于文字型 PDF（Word 导出的文件、发票等），扫描件/图片型 PDF 不支持。', dropMain: '选择要转换的 PDF', dropSub: '提取文字内容，保存为可编辑的 Word 文档', resultTitle: '提取完成', btnDownload: '下载 Word 文档 (.docx)', info: '已从 {0} 页提取文字内容', fail: '文字提取失败：', morePages: '+ 还有 {0} 页' },
+    pdf2word: { title: 'PDF 转 Word', desc: '将 PDF 每页高保真渲染后嵌入 Word 文档 (.docx)。表格、排版、字体、图片全部原样保留。', dropMain: '选择要转换的 PDF', dropSub: '每页渲染为高清图片嵌入 Word，保留原始排版', resultTitle: '转换完成', btnDownload: '下载 Word 文档 (.docx)', info: '已将 {0} 页转换为 Word 文档', fail: '转换失败：', morePages: '+ 还有 {0} 页' },
     footer: { local: '所有处理均在浏览器本地完成 — 您的文件不会上传到任何服务器。', privacy: '隐私政策', terms: '服务条款', contact: '联系我们' }
   }
 };
@@ -817,23 +817,27 @@ setupDropzone('pdf2word-drop', 'pdf2word-input', async function(files) {
 async function doPdf2Word() {
   setProgress('pdf2word-progress', 5);
   try {
+    var scale = 2;
     var sections = [];
     for (var i = 0; i < pdf2wordCount; i++) {
       var pg = await pdf2wordDoc.getPage(i + 1);
-      var tc = await pg.getTextContent();
+      var vp = pg.getViewport({ scale: scale });
+      var cv = document.createElement('canvas'); cv.width = vp.width; cv.height = vp.height;
+      var ctx = cv.getContext('2d');
+      await pg.render({ canvasContext: ctx, viewport: vp }).promise;
+      var blob2 = await new Promise(function(resolve) { cv.toBlob(function(b) { resolve(b); }, 'image/png'); });
+      var buf2 = await blob2.arrayBuffer();
+      var imgWidthEmu = 6.5 * 914400; // 6.5 inches in EMU
+      var imgHeightEmu = (vp.height / vp.width) * imgWidthEmu;
       var children = [];
-      children.push(new docx.Paragraph({ children: [new docx.TextRun({ text: '--- Page ' + (i + 1) + ' ---', bold: true, size: 24 })], spacing: { after: 200 } }));
-      var lines = [], curY = null, curLine = '';
-      tc.items.forEach(function(it) {
-        var y = Math.round(it.transform[5]);
-        if (curY === null) { curY = y; curLine = it.str; }
-        else if (Math.abs(y - curY) < 5) { curLine += it.str; }
-        else { lines.push(curLine.trim()); curY = y; curLine = it.str; }
-      });
-      if (curLine.trim()) lines.push(curLine.trim());
-      lines.filter(function(l) { return l; }).forEach(function(l) {
-        children.push(new docx.Paragraph({ children: [new docx.TextRun({ text: l, size: 24 })], spacing: { after: 120 } }));
-      });
+      children.push(new docx.Paragraph({
+        children: [new docx.TextRun({ text: 'Page ' + (i + 1), bold: true, size: 24 })],
+        spacing: { after: 100 }
+      }));
+      children.push(new docx.Paragraph({
+        children: [new docx.ImageRun({ data: buf2, transformation: { width: Math.round(imgWidthEmu), height: Math.round(imgHeightEmu) }, type: 'png' })],
+        spacing: { after: 300 }
+      }));
       sections.push({ children: children });
       setProgress('pdf2word-progress', 5 + ((i + 1) / pdf2wordCount) * 85);
     }
