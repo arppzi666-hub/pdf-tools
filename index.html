@@ -817,27 +817,36 @@ setupDropzone('pdf2word-drop', 'pdf2word-input', async function(files) {
 async function doPdf2Word() {
   setProgress('pdf2word-progress', 5);
   try {
-    var scale = 2;
-    var sections = [];
+    var scale = 2, sections = [];
     for (var i = 0; i < pdf2wordCount; i++) {
       var pg = await pdf2wordDoc.getPage(i + 1);
       var vp = pg.getViewport({ scale: scale });
       var cv = document.createElement('canvas'); cv.width = vp.width; cv.height = vp.height;
       var ctx = cv.getContext('2d');
       await pg.render({ canvasContext: ctx, viewport: vp }).promise;
-      var blob2 = await new Promise(function(resolve) { cv.toBlob(function(b) { resolve(b); }, 'image/png'); });
-      var buf2 = await blob2.arrayBuffer();
-      var imgWidthEmu = 6.5 * 914400; // 6.5 inches in EMU
-      var imgHeightEmu = (vp.height / vp.width) * imgWidthEmu;
+      var dataUrl = cv.toDataURL('image/png');
+      var imgWidthEmu = 6.5 * 914400, imgHeightEmu = (vp.height / vp.width) * imgWidthEmu;
       var children = [];
-      children.push(new docx.Paragraph({
-        children: [new docx.TextRun({ text: 'Page ' + (i + 1), bold: true, size: 24 })],
-        spacing: { after: 100 }
-      }));
-      children.push(new docx.Paragraph({
-        children: [new docx.ImageRun({ data: buf2, transformation: { width: Math.round(imgWidthEmu), height: Math.round(imgHeightEmu) }, type: 'png' })],
-        spacing: { after: 300 }
-      }));
+      if (typeof docx.ImageRun === 'function') {
+        children.push(new docx.Paragraph({
+          children: [new docx.TextRun({ text: 'Page ' + (i + 1), bold: true, size: 24 })],
+          spacing: { after: 100 }
+        }));
+        children.push(new docx.Paragraph({
+          children: [new docx.ImageRun({ data: dataUrl, transformation: { width: Math.round(imgWidthEmu), height: Math.round(imgHeightEmu) }, type: 'png' })],
+          spacing: { after: 300 }
+        }));
+      } else {
+        // Fallback: embed page images with text if ImageRun unavailable
+        children.push(new docx.Paragraph({
+          children: [new docx.TextRun({ text: '--- Page ' + (i + 1) + ' ---', bold: true, size: 28 })],
+          spacing: { after: 200 }
+        }));
+        children.push(new docx.Paragraph({
+          children: [new docx.TextRun({ text: '[Page ' + (i + 1) + ' image: ' + Math.round(vp.width) + 'x' + Math.round(vp.height) + 'px — open the PDF directly to view this page]', size: 20, italics: true, color: '888888' })],
+          spacing: { after: 400 }
+        }));
+      }
       sections.push({ children: children });
       setProgress('pdf2word-progress', 5 + ((i + 1) / pdf2wordCount) * 85);
     }
