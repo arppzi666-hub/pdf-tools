@@ -88,6 +88,16 @@ footer{text-align:center;padding:32px 16px;color:var(--sub);font-size:13px;borde
 footer a{color:var(--sub);text-decoration:underline}
 .tool-section{display:none}
 .tool-section.active{display:block}
+/* Modal overlay for legal pages */
+.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:999;overflow-y:auto}
+.modal-overlay.show{display:flex;align-items:flex-start;justify-content:center;padding:40px 16px}
+.modal-box{background:var(--surface);border-radius:var(--radius);padding:32px;max-width:640px;width:100%;box-shadow:0 4px 24px rgba(0,0,0,.15);position:relative}
+.modal-box h2{font-size:22px;margin-bottom:16px}
+.modal-box h3{font-size:16px;margin:16px 0 8px;color:var(--text)}
+.modal-box p,.modal-box ul{font-size:14px;color:var(--sub);line-height:1.7;margin-bottom:8px}
+.modal-box ul{padding-left:20px}
+.modal-close{position:absolute;top:12px;right:16px;font-size:24px;border:none;background:0;cursor:pointer;color:var(--sub);padding:4px 8px;border-radius:6px}
+.modal-close:hover{background:#f1f5f9}
 @media(max-width:640px){
   header{padding:0 12px;height:56px}
   .logo{font-size:18px}
@@ -126,8 +136,10 @@ footer a{color:var(--sub);text-decoration:underline}
   </section>
 
   <div class="ad-top">
-    <ins class="adsbygoogle" style="display:block;width:728px;height:90px;margin:0 auto"
-         data-ad-client="ca-pub-XXXXXXXXXXXXXX" data-ad-slot="0000000000"></ins>
+    <ins class="adsbygoogle" style="display:block;min-width:300px;max-width:728px;min-height:90px;margin:0 auto"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXX" data-ad-slot="0000000000"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
     <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
   </div>
 
@@ -349,9 +361,62 @@ footer a{color:var(--sub);text-decoration:underline}
   </div>
 </main>
 
+<!-- Privacy Policy Modal -->
+<div class="modal-overlay" id="modal-privacy">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('privacy')">&times;</button>
+    <h2 data-i18n="privacy.title">Privacy Policy</h2>
+    <p data-i18n="privacy.last">Last updated: June 2026</p>
+    <h3 data-i18n="privacy.h1">1. Data Collection</h3>
+    <p data-i18n="privacy.p1">This site does NOT collect, store, or transmit any of your files or personal data. All PDF processing happens entirely in your browser using client-side JavaScript. Your files never leave your device.</p>
+    <h3 data-i18n="privacy.h2">2. Cookies & Advertising</h3>
+    <p data-i18n="privacy.p2">We use Google AdSense to display advertisements. Google uses cookies to serve ads based on your prior visits to this or other websites. Google's use of advertising cookies enables it and its partners to serve ads based on your visit to this site and/or other sites on the Internet.</p>
+    <p data-i18n="privacy.p3">You may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Google Ads Settings</a>. Alternatively, you can opt out of third-party cookies by visiting <a href="https://thenai.org/opt-out/" target="_blank" rel="noopener">NAI Opt-Out</a>.</p>
+    <h3 data-i18n="privacy.h3">3. Third-Party Services</h3>
+    <p data-i18n="privacy.p4">This site uses the following third-party services:</p>
+    <ul>
+      <li><strong>Google AdSense</strong> — serves advertisements (uses cookies for ad personalization)</li>
+      <li><strong>CDN Libraries</strong> (unpkg, cdnjs) — loads JavaScript libraries for PDF processing; these CDNs may log standard access data (IP address, browser type) for content delivery purposes</li>
+    </ul>
+    <h3 data-i18n="privacy.h4">4. Contact</h3>
+    <p data-i18n="privacy.p5">If you have questions about this Privacy Policy, please contact us through the Contact page.</p>
+  </div>
+</div>
+
+<!-- Terms Modal -->
+<div class="modal-overlay" id="modal-terms">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('terms')">&times;</button>
+    <h2 data-i18n="terms.title">Terms of Service</h2>
+    <p data-i18n="terms.last">Last updated: June 2026</p>
+    <h3 data-i18n="terms.h1">1. Acceptance of Terms</h3>
+    <p data-i18n="terms.p1">By using this website, you agree to these terms. If you do not agree, please do not use the site.</p>
+    <h3 data-i18n="terms.h2">2. Service Description</h3>
+    <p data-i18n="terms.p2">This site provides free online PDF processing tools. All tools run locally in your browser. We make no guarantees about availability, accuracy, or fitness for any particular purpose.</p>
+    <h3 data-i18n="terms.h3">3. User Responsibilities</h3>
+    <p data-i18n="terms.p3">You are responsible for the files you process. Do not use these tools for illegal purposes, including processing copyrighted material you do not own or have permission to use.</p>
+    <h3 data-i18n="terms.h4">4. Limitation of Liability</h3>
+    <p data-i18n="terms.p4">This service is provided "as is" without warranty of any kind. We are not liable for any damages arising from the use or inability to use this site.</p>
+    <h3 data-i18n="terms.h5">5. Advertisements</h3>
+    <p data-i18n="terms.p5">This site displays advertisements served by Google AdSense. We are not responsible for the content of third-party advertisements.</p>
+  </div>
+</div>
+
+<!-- Contact Modal -->
+<div class="modal-overlay" id="modal-contact">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('contact')">&times;</button>
+    <h2 data-i18n="contact.title">Contact Us</h2>
+    <p data-i18n="contact.p1">Have questions, suggestions, or found a bug? We'd love to hear from you.</p>
+    <p style="margin-top:12px"><strong>Email:</strong> <a href="mailto:arppzi666@gmail.com">arppzi666@gmail.com</a></p>
+    <p><strong>GitHub:</strong> <a href="https://github.com/arppzi666-hub/pdf-tools" target="_blank" rel="noopener">github.com/arppzi666-hub/pdf-tools</a></p>
+    <p style="margin-top:16px;color:var(--sub);font-size:13px" data-i18n="contact.p2">We typically respond within 24-48 hours.</p>
+  </div>
+</div>
+
 <footer>
   <p data-i18n="footer.local">All processing is done locally in your browser — your files are never uploaded to any server.</p>
-  <p style="margin-top:8px"><a href="#" data-i18n="footer.privacy">Privacy Policy</a> &middot; <a href="#" data-i18n="footer.terms">Terms of Service</a> &middot; <a href="#" data-i18n="footer.contact">Contact</a></p>
+  <p style="margin-top:8px"><a href="#" onclick="openModal('privacy');return false" data-i18n="footer.privacy">Privacy Policy</a> &middot; <a href="#" onclick="openModal('terms');return false" data-i18n="footer.terms">Terms of Service</a> &middot; <a href="#" onclick="openModal('contact');return false" data-i18n="footer.contact">Contact</a></p>
 </footer>
 
 <!-- ===== UI Core: runs BEFORE CDN scripts ===== -->
@@ -368,7 +433,10 @@ var _i18n = {
     unlock: { title: 'Unlock PDF', desc: 'Remove password protection and restrictions from your PDF. Only for PDFs you own.', dropMain: 'Choose a PDF to unlock', dropSub: 'PDFs with owner restrictions can be unlocked instantly', pwLabel: 'This PDF requires a password:', pwPlaceholder: 'PDF password', btnUnlock: 'Unlock PDF', resultTitle: 'PDF Unlocked', btnDownload: 'Download Unlocked PDF', info: 'Restrictions removed — {0}', unlocking: 'Unlocking…', wrongPw: 'Wrong password or unable to decrypt', fail: 'Unlock failed: ' },
     word2pdf: { title: 'Word to PDF', desc: 'Convert Word documents (.docx) to PDF. Preview first, then download as PDF via browser print.', dropMain: 'Choose a Word document', dropSub: '.docx files only', btnDownload: 'Download as PDF', printHint: 'Opens browser print dialog — choose "Save as PDF"', popupBlocked: 'Pop-up blocked! Please allow pop-ups for this site to download PDF.', readFail: 'Failed to read Word document: ' },
     pdf2word: { title: 'PDF to Word', desc: 'Convert PDF pages to a Word document (.docx) with exact layout preserved. Each page is rendered as a high-resolution image — tables, formatting, fonts, and images stay exactly as they appear.', dropMain: 'Choose a PDF to convert', dropSub: 'Each page is rendered as a high-res image, preserving original layout', resultTitle: 'Conversion Complete', btnDownload: 'Download Word Document (.docx)', info: 'Converted {0} pages to Word', fail: 'PDF to Word failed: ', morePages: '+{0} more pages' },
-    footer: { local: 'All processing is done locally in your browser — your files are never uploaded to any server.', privacy: 'Privacy Policy', terms: 'Terms of Service', contact: 'Contact' }
+    footer: { local: 'All processing is done locally in your browser — your files are never uploaded to any server.', privacy: 'Privacy Policy', terms: 'Terms of Service', contact: 'Contact' },
+    privacy: { title: 'Privacy Policy', last: 'Last updated: June 2026', h1: '1. Data Collection', p1: 'This site does NOT collect, store, or transmit any of your files or personal data. All PDF processing happens entirely in your browser using client-side JavaScript. Your files never leave your device.', h2: '2. Cookies & Advertising', p2: 'We use Google AdSense to display advertisements. Google uses cookies to serve ads based on your prior visits to this or other websites.', p3: 'You may opt out of personalized advertising by visiting Google Ads Settings.', h3: '3. Third-Party Services', p4: 'This site uses Google AdSense for advertisements and CDN libraries (unpkg, cdnjs) for PDF processing functionality.', h4: '4. Contact', p5: 'If you have questions about this Privacy Policy, please contact us through the Contact page.' },
+    terms: { title: 'Terms of Service', last: 'Last updated: June 2026', h1: '1. Acceptance', p1: 'By using this website, you agree to these terms.', h2: '2. Service', p2: 'This site provides free online PDF tools running locally in your browser. No guarantees about availability or accuracy.', h3: '3. Responsibilities', p3: 'Do not use these tools for illegal purposes or to process copyrighted material you do not own.', h4: '4. Liability', p4: 'This service is provided "as is" without warranty. We are not liable for any damages.', h5: '5. Ads', p5: 'This site displays Google AdSense advertisements. We are not responsible for third-party ad content.' },
+    contact: { title: 'Contact Us', p1: 'Have questions, suggestions, or found a bug? We would love to hear from you.', p2: 'We typically respond within 24-48 hours.' },
   },
   zh: {
     nav: { merge: '合并', split: '拆分', compress: '压缩', pdf2jpg: 'PDF转图', rotate: '旋转', unlock: '解锁', word2pdf: 'Word转PDF', pdf2word: 'PDF转Word' },
@@ -381,10 +449,16 @@ var _i18n = {
     unlock: { title: '解锁 PDF', desc: '移除 PDF 的密码保护和使用限制。仅用于您拥有权限的文件。', dropMain: '选择要解锁的 PDF', dropSub: '设有密码保护的 PDF 请输入密码解锁', pwLabel: '请输入 PDF 密码：', pwPlaceholder: '输入密码', btnUnlock: '开始解锁', resultTitle: '解锁完成', btnDownload: '下载解锁文件', info: '密码保护已移除 — {0}', unlocking: '解锁中…', wrongPw: '密码错误，请重试', fail: '解锁失败：' },
     word2pdf: { title: 'Word 转 PDF', desc: '将 Word 文档 (.docx) 转换为 PDF。先预览内容，再通过浏览器打印保存。', dropMain: '选择 Word 文档', dropSub: '仅支持 .docx 格式', btnDownload: '下载为 PDF', printHint: '将弹出打印窗口，选择「另存为 PDF」即可保存', popupBlocked: '弹窗被拦截！请在浏览器设置中允许本站弹窗。', readFail: '无法读取 Word 文档：' },
     pdf2word: { title: 'PDF 转 Word', desc: '将 PDF 每页高保真渲染后嵌入 Word 文档 (.docx)。表格、排版、字体、图片全部原样保留。', dropMain: '选择要转换的 PDF', dropSub: '每页渲染为高清图片嵌入 Word，保留原始排版', resultTitle: '转换完成', btnDownload: '下载 Word 文档 (.docx)', info: '已将 {0} 页转换为 Word 文档', fail: '转换失败：', morePages: '+ 还有 {0} 页' },
-    footer: { local: '所有处理均在浏览器本地完成 — 您的文件不会上传到任何服务器。', privacy: '隐私政策', terms: '服务条款', contact: '联系我们' }
+    footer: { local: '所有处理均在浏览器本地完成 — 您的文件不会上传到任何服务器。', privacy: '隐私政策', terms: '服务条款', contact: '联系我们' },
+    privacy: { title: '隐私政策', last: '最后更新：2026年6月', h1: '1. 数据收集', p1: '本站不会收集、存储或传输您的任何文件或个人数据。所有PDF处理均在您的浏览器中使用客户端JavaScript完成。您的文件永远不会离开您的设备。', h2: '2. Cookie与广告', p2: '我们使用Google AdSense展示广告。Google使用Cookie根据您之前访问本站或其他网站的记录来投放个性化广告。', p3: '您可以通过访问Google广告设置来退出个性化广告。', h3: '3. 第三方服务', p4: '本站使用Google AdSense展示广告，使用CDN库（unpkg、cdnjs）加载PDF处理功能。', h4: '4. 联系方式', p5: '如果您对本隐私政策有疑问，请通过联系页面与我们联系。' },
+    terms: { title: '服务条款', last: '最后更新：2026年6月', h1: '1. 接受条款', p1: '使用本网站即表示您同意这些条款。如果您不同意，请勿使用。', h2: '2. 服务说明', p2: '本站提供免费的在线PDF处理工具，所有工具均在浏览器本地运行。我们不对可用性、准确性或适用性做任何保证。', h3: '3. 用户责任', p3: '请勿将本工具用于非法目的，包括处理您不拥有或无权使用的版权材料。', h4: '4. 责任限制', p4: '本服务按"原样"提供，不作任何形式的担保。我们不对因使用或无法使用本网站而产生的任何损害承担责任。', h5: '5. 广告', p5: '本站展示Google AdSense广告。我们不对第三方广告内容负责。' },
+    contact: { title: '联系我们', p1: '有疑问、建议或发现了bug？欢迎联系我们。', p2: '我们通常在24-48小时内回复。' },
   }
 };
 var _lang = (function(){ try { return localStorage.getItem('pdf-tools-lang'); } catch(e) {} return null; })() || (navigator.language.startsWith('zh') ? 'zh' : 'en');
+function openModal(id) { var m = document.getElementById('modal-' + id); if (m) m.classList.add('show'); }
+function closeModal(id) { var m = document.getElementById('modal-' + id); if (m) m.classList.remove('show'); }
+document.addEventListener('click', function(e) { if (e.target.classList.contains('modal-overlay') && e.target.classList.contains('show')) e.target.classList.remove('show'); });
 function _t(key) {
   var s = key.split('.').reduce(function(o, k) { return (o || {})[k]; }, _i18n[_lang]);
   if (s === undefined) return key;
