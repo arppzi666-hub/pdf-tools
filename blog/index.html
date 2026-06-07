@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF Tools Blog - Free PDF Tips & Tools</title>
+<meta name="description" content="Free PDF tips, tutorials, and tool recommendations. Learn how to merge, split, compress, and convert PDFs.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://arppzi666-hub.github.io/pdf-tools/blog/">
+<style>
+:root{--bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--text:#1e293b;--sub:#64748b;--pri:#2563eb;--radius:12px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;height:64px;gap:12px}
+.logo{font-size:22px;font-weight:800;color:var(--pri);white-space:nowrap;text-decoration:none}
+.logo span{color:var(--text)}
+nav{flex:1;text-align:right}
+nav a{color:var(--sub);text-decoration:none;margin-left:20px;font-size:14px;font-weight:500}
+nav a:hover{color:var(--pri)}
+main{max-width:720px;margin:0 auto;padding:32px 16px 64px}
+h1{font-size:28px;font-weight:800;margin-bottom:8px}
+.blog-desc{color:var(--sub);font-size:15px;margin-bottom:32px}
+.post-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:16px;transition:.15s}
+.post-card:hover{border-color:var(--pri);box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.post-card h2{font-size:18px;font-weight:700;margin-bottom:6px}
+.post-card h2 a{color:var(--text);text-decoration:none}
+.post-card h2 a:hover{color:var(--pri)}
+.post-card .meta{font-size:12px;color:var(--sub);margin-bottom:8px}
+.post-card .excerpt{font-size:14px;color:var(--sub);line-height:1.6}
+.tag{display:inline-block;padding:2px 8px;background:#eff6ff;color:var(--pri);border-radius:4px;font-size:11px;font-weight:600;margin-right:6px}
+footer{text-align:center;padding:24px 16px;color:var(--sub);font-size:13px;border-top:1px solid var(--border)}
+footer a{color:var(--sub);text-decoration:underline}
+@media(max-width:640px){header{padding:0 12px;height:56px}.logo{font-size:18px}nav a{margin-left:12px;font-size:13px}h1{font-size:24px}}
+</style>
+</head>
+<body>
+<header>
+<a href="/pdf-tools/" class="logo">PDF<span>tools</span></a>
+<nav>
+<a href="/pdf-tools/">Tools</a>
+<a href="/pdf-tools/blog/">Blog</a>
+</nav>
+</header>
+<main>
+<h1>PDF Tools Blog</h1>
+<p class="blog-desc">Free PDF tips, tutorials, and AI tool discoveries. Updated regularly.</p>
+
+<div id="post-list">
+<!-- Posts will be loaded here -->
+</div>
+</main>
+<footer>
+<p>All processing is done locally in your browser. No uploads, no privacy risks.</p>
+<p style="margin-top:8px"><a href="/pdf-tools/">← Back to PDF Tools</a></p>
+</footer>
+
+<script>
+var posts = [
+  {
+    title: "8 Free Online PDF Tools You Need in 2026 — No Download, No Upload",
+    date: "2026-06-07",
+    slug: "free-pdf-tools-2026",
+    excerpt: "Stop paying for PDF software. Here are 8 completely free, browser-based PDF tools that work offline — merge, split, compress, rotate, unlock, and convert between PDF, Word, and JPG. All processing stays on your device.",
+    tags: ["PDF", "Free Tools", "Productivity"]
+  },
+  {
+    title: "How AI Helped Me Build a PDF Tool Website in One Day",
+    date: "2026-06-07",
+    slug: "ai-coding-pdf-tools-website",
+    excerpt: "I used Claude Code and DeepSeek to build a complete PDF tools website in a single day — 8 tools, Chinese/English i18n, AdSense compliance, and responsive design. Here's exactly how I did it, with prompts and workflow.",
+    tags: ["AI Coding", "Tutorial", "Claude Code"]
+  },
+  {
+    title: "PDF to Word Conversion That Actually Preserves Formatting",
+    date: "2026-06-07",
+    slug: "pdf-to-word-formatting-solved",
+    excerpt: "Most PDF to Word converters destroy your formatting — tables become chaos, fonts disappear. Here's how our tool solves this by rendering each page as a high-resolution image embedded directly in the Word document.",
+    tags: ["PDF", "Tips", "Word"]
+  }
+];
+
+var html = '';
+for (var i = 0; i < posts.length; i++) {
+  var p = posts[i];
+  var tags = '';
+  for (var j = 0; j < p.tags.length; j++) {
+    tags += '<span class="tag">' + p.tags[j] + '</span>';
+  }
+  html += '<div class="post-card">';
+  html += '<h2><a href="' + p.slug + '.html">' + p.title + '</a></h2>';
+  html += '<div class="meta">' + p.date + ' &middot; ' + tags + '</div>';
+  html += '<p class="excerpt">' + p.excerpt + '</p>';
+  html += '</div>';
+}
+document.getElementById('post-list').innerHTML = html;
+</script>
+</body>
+</html>

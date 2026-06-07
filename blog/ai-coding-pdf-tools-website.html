@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How AI Helped Me Build a PDF Tool Website in One Day</title>
+<meta name="description" content="I used Claude Code and DeepSeek to build a complete PDF tools website in a single day. Here's exactly how, with prompts and workflow.">
+<meta name="robots" content="index, follow">
+<style>
+:root{--bg:#f8fafc;--surface:#fff;--border:#e2e8f0;--text:#1e293b;--sub:#64748b;--pri:#2563eb;--radius:12px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.8;min-height:100vh}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;height:64px;gap:12px}
+.logo{font-size:22px;font-weight:800;color:var(--pri);white-space:nowrap;text-decoration:none}
+.logo span{color:var(--text)}
+nav{flex:1;text-align:right}
+nav a{color:var(--sub);text-decoration:none;margin-left:20px;font-size:14px;font-weight:500}
+nav a:hover{color:var(--pri)}
+article{max-width:720px;margin:0 auto;padding:32px 16px 64px}
+h1{font-size:28px;font-weight:800;margin:16px 0 8px;line-height:1.3}
+.date{color:var(--sub);font-size:13px;margin-bottom:24px}
+h2{font-size:20px;font-weight:700;margin:32px 0 12px}
+h3{font-size:16px;font-weight:600;margin:20px 0 8px}
+p{margin-bottom:12px}
+ul,ol{padding-left:24px;margin-bottom:12px}
+li{margin-bottom:6px}
+code{background:#f1f5f9;padding:2px 6px;border-radius:4px;font-size:13px}
+pre{background:#1e293b;color:#e2e8f0;padding:16px;border-radius:8px;overflow-x:auto;margin:12px 0;font-size:13px;line-height:1.5}
+a{color:var(--pri);text-decoration:none}
+a:hover{text-decoration:underline}
+footer{text-align:center;padding:24px 16px;color:var(--sub);font-size:13px;border-top:1px solid var(--border)}
+footer a{color:var(--sub);text-decoration:underline}
+blockquote{border-left:3px solid var(--pri);padding-left:16px;color:var(--sub);margin:12px 0}
+@media(max-width:640px){header{padding:0 12px;height:56px}.logo{font-size:18px}h1{font-size:22px}pre{font-size:12px}}
+</style>
+</head>
+<body>
+<header>
+<a href="/pdf-tools/" class="logo">PDF<span>tools</span></a>
+<nav>
+<a href="/pdf-tools/">Tools</a>
+<a href="/pdf-tools/blog/">Blog</a>
+</nav>
+</header>
+<article>
+<h1>How AI Helped Me Build a PDF Tool Website in One Day</h1>
+<p class="date">June 7, 2026 &middot; 8 min read</p>
+
+<p>I built <a href="https://arppzi666-hub.github.io/pdf-tools/">pdftools.fun</a> — a complete online PDF toolkit with 8 utilities, Chinese/English language switching, and Google AdSense integration — in a single day using AI coding assistants. Here's the exact process, prompts, and lessons learned.</p>
+
+<h2>The Stack</h2>
+<ul>
+<li><strong>AI Assistant:</strong> Claude Code with DeepSeek V4 Pro</li>
+<li><strong>Frontend:</strong> Single-file HTML/CSS/JS (no framework)</li>
+<li><strong>PDF Libraries:</strong> pdf-lib, PDF.js, JSZip, FileSaver.js, mammoth.js, docx</li>
+<li><strong>Hosting:</strong> GitHub Pages (free, global CDN)</li>
+</ul>
+
+<h2>Step 1: Define the Scope</h2>
+<p>Instead of building one tool at a time, I listed all 8 tools upfront:</p>
+<ol>
+<li>Merge PDFs</li>
+<li>Split PDF</li>
+<li>Compress PDF</li>
+<li>PDF to JPG</li>
+<li>Rotate PDF</li>
+<li>Unlock PDF</li>
+<li>Word to PDF</li>
+<li>PDF to Word</li>
+</ol>
+<p>This scoping prevented scope creep and gave the AI a clear target.</p>
+
+<h2>Step 2: Generate the Base</h2>
+<p>The prompt was simple but specific:</p>
+<pre>Build a single-file HTML website with 8 PDF tools.
+All processing must be client-side. Use CDN libraries.
+Add Chinese/English i18n. Include Google AdSense slots.
+Mobile responsive. Clean modern UI.</pre>
+<p>The AI generated ~500 lines of working code in one shot.</p>
+
+<h2>Step 3: Debug Iteratively</h2>
+<p>The hardest bugs were NOT code logic — they were environmental:</p>
+<ul>
+<li><strong>CDN script blocking:</strong> Synchronous script tags blocked all inline JS on slow mobile connections. Fixed by moving UI code BEFORE CDN scripts.</li>
+<li><strong>Mobile unresponsive:</strong> Event listeners weren't attaching because deferred scripts executed after inline ones. Fixed with DOMContentLoaded wrapper.</li>
+<li><strong>PDF to Word formatting loss:</strong> Text extraction via pdfjsLib discarded all formatting. Fixed by rendering pages as images and embedding them as ImageRun in docx.</li>
+</ul>
+
+<h2>Step 4: i18n Architecture</h2>
+<p>Rather than using a heavy i18n library, I used a simple data-driven approach:</p>
+<pre>var _i18n = {
+  en: { merge: { title: 'Merge PDF Files', ... } },
+  zh: { merge: { title: '合并 PDF', ... } }
+};
+function _t(key) { ... }
+function _applyLang() { ... }</pre>
+<p>All translatable elements use <code>data-i18n</code> attributes. The language preference persists via localStorage.</p>
+
+<h2>Key Takeaways</h2>
+<ol>
+<li><strong>Define everything before coding.</strong> A clear list of 8 tools prevented feature creep.</li>
+<li><strong>Test on real mobile devices.</strong> Desktop Chrome can't catch CDN blocking issues.</li>
+<li><strong>Use AI for debugging, not just generation.</strong> The AI read error logs, identified root causes, and proposed fixes faster than manual debugging.</li>
+<li><strong>Single-file architecture wins for simple projects.</strong> No build step, no deployment complexity.</li>
+</ol>
+
+<h2>What's Next</h2>
+<p>I'm adding more tools (PDF to Excel, OCR for scanned PDFs) and building a blog (you're reading it) for SEO. The entire site will remain free and ad-supported.</p>
+
+<p><strong>Try the tools:</strong> <a href="https://arppzi666-hub.github.io/pdf-tools/">pdftools.fun</a></p>
+</article>
+<footer>
+<p><a href="/pdf-tools/blog/">← Back to Blog</a> &middot; <a href="/pdf-tools/">PDF Tools</a></p>
+</footer>
+</body>
+</html>
