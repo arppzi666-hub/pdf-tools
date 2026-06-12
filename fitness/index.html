@@ -60,7 +60,7 @@ function td(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1)
 function dd(a,b){return Math.floor((new Date(b)-new Date(a))/86400000)}
 function td2(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 
-var pg='login',tab='dash',sp='',sday='';
+var pg='login',tab='dash',sp='',sday='',calYr=0,calMo=0;
 
 function go(){
   try{doGo()}catch(e){document.getElementById('app').innerHTML='<div class="login"><div class="icon">!</div><h1>Error</h1><div class="sub">'+e.message+'</div><button class="btn btn-outline mt12" onclick="localStorage.clear();location.reload()">Reset</button></div>'}
@@ -92,8 +92,13 @@ function coachUI(d){
     o+='<div class="stats"><div class="stat"><div class="stat-n" style="color:#27ae60">'+ac.length+'</div><div class="stat-l">活跃学员</div></div><div class="stat"><div class="stat-n">'+ck.length+'</div><div class="stat-l">今日签到</div></div><div class="stat"><div class="stat-n" style="color:#e67e22">'+es.length+'</div><div class="stat-l">即将到期</div></div><div class="stat"><div class="stat-n" style="color:#e74c3c">'+s.filter(function(x){return x.st=='expired'}).length+'</div><div class="stat-l">已过期</div></div></div>';
     if(es.length){o+='<div class="card"><h3>即将到期</h3>';for(var i=0;i<es.length;i++){var x=es[i],r=x.days-dd(x.start||t,t);o+='<div class="lr"><div><strong>'+x.name+'</strong><span class="sub"> '+x.phone+'</span></div><span class="badge bg-red">'+r+'天</span><button class="btn btn-sm btn-green" onclick="extend(\''+x.id+'\')">续期</button></div>'}o+='</div>';}
     o+='<div class="card"><h3>今日签到 '+ck.length+'人</h3>';
-    for(var i=0;i<ck.length;i++){var c=ck[i],st=s.find(function(v){return v.id==c.sid});o+='<div class="lr"><span>'+(st?st.name:'?')+'</span><span class="badge bg-green">已签到</span></div>'}
+    for(var i=0;i<ck.length;i++){var c=ck[i],st=s.find(function(v){return v.id==c.sid});o+='<div class="lr"><span>'+(st?st.name:'?')+'</span><span class="badge bg-green">已签到</span><button class="btn btn-sm btn-red" onclick="undoCk(\''+c.sid+'\')" style="margin-left:8px">撤销</button></div>'}
     if(!ck.length)o+='<div class="sub tc">暂无</div>';o+='</div>';
+    var unc=ac.filter(function(x){return!ck.some(function(c){return c.sid==x.id})});
+    if(unc.length)o+='<div class="card" style="border-left:4px solid #f59e0b"><h3>⚠️ 今日未签到 ('+unc.length+'人)</h3>';
+    for(var i=0;i<unc.length;i++)o+='<div class="lr"><span><strong>'+unc[i].name+'</strong><span class="sub"> '+unc[i].phone+'</span></span><button class="btn btn-sm btn-green" onclick="ckin(\''+unc[i].id+'\')">签到</button></div>';
+    o+='</div>';
+    o+='<div class="card"><div class="row"><button class="btn btn-sm btn-outline col" onclick="exportD()">📤 导出备份</button><button class="btn btn-sm btn-outline col" onclick="chPwd()">🔒 改密码</button></div></div>';
   }
   else if(tab=='list'){
     for(var i=0;i<s.length;i++){var x=s[i],r=x.type=='monthly'?Math.max(0,x.days-dd(x.start||t,t)):(x.sessions||0)-(x.used||0);
@@ -104,7 +109,9 @@ function coachUI(d){
     o+='<div class="row mt8">';
     if(x.st=='active')o+='<button class="btn btn-sm btn-orange" onclick="indPause(\''+x.id+'\')">请假</button><button class="btn btn-sm btn-green" onclick="ckin(\''+x.id+'\')">签到</button>';
     if(x.st=='paused')o+='<button class="btn btn-sm btn-green" onclick="indResume(\''+x.id+'\')">恢复</button>';
-    o+='<button class="btn btn-sm btn-outline" onclick="ec(\''+x.id+'\')">改卡</button><button class="btn btn-sm btn-red" onclick="delS(\''+x.id+'\')">删除</button></div></div>'}
+    o+='<button class="btn btn-sm btn-outline" onclick="ec(\''+x.id+'\')">改卡</button><button class="btn btn-sm btn-outline" onclick="edS(\''+x.id+'\')">编辑</button>';
+    if(ck.some(function(c){return c.sid==x.id}))o+='<button class="btn btn-sm btn-red" onclick="undoCk(\''+x.id+'\')">撤销签到</button>';
+    o+='<button class="btn btn-sm btn-red" onclick="delS(\''+x.id+'\')">删除</button></div></div>'}
     if(!s.length)o+='<div class="card sub tc">暂无学员，点"添加"</div>';
   }
   else if(tab=='add'){
@@ -115,12 +122,13 @@ function coachUI(d){
     o+='<button class="btn btn-blue mt8" onclick="addS()">保存</button></div>';
   }
   else if(tab=='cal'){
-    var now=new Date(),yr=now.getFullYear(),mo=now.getMonth();
+    var now=new Date();if(!calYr){calYr=now.getFullYear();calMo=now.getMonth();}
+    var yr=calYr,mo=calMo;
     var fday=new Date(yr,mo,1).getDay(),lday=new Date(yr,mo+1,0).getDate();
     var mn=yr+'-'+String(mo+1).padStart(2,'0');
     var cc={};
     d.c.forEach(function(x){if(x.date&&x.date.startsWith(mn)){cc[x.date]=cc[x.date]||[];cc[x.date].push(x.sid)}});
-    o+='<div class="card"><h3>📅 '+yr+'年'+(mo+1)+'月</h3>';
+    o+='<div class="card"><h3 style="justify-content:space-between">📅 <span><button class="btn btn-sm btn-outline" onclick="calMo--;go()" style="margin-right:4px">◀</button>'+yr+'年'+(mo+1)+'月<button class="btn btn-sm btn-outline" onclick="calMo++;go()" style="margin-left:4px">▶</button></span></h3>';
     o+='<div class="cal-grid">';
     var hd=['日','一','二','三','四','五','六'];
     for(var i=0;i<7;i++)o+='<div style="color:#94a3b8;font-size:11px;padding:8px 0">'+hd[i]+'</div>';
@@ -178,5 +186,9 @@ function extend(sid){var d=R(),s=d.s.find(function(x){return x.id==sid});if(s){s
 function showDay(dt){sday=dt;go()}
 function ec(sid){var d=R(),s=d.s.find(function(x){return x.id==sid});if(!s)return;var nd=prompt(s.type=='monthly'?'修改天数（当前'+s.days+'天）：':'修改次数（当前'+s.sessions+'次）：',s.type=='monthly'?s.days:s.sessions);if(nd!==null){var v=parseInt(nd);if(v>0){if(s.type=='monthly')s.days=v;else{s.sessions=v;s.used=Math.min(s.used,v)}s.st='active';W(d);go()}}}
 function delS(sid){if(confirm('确认删除该学员？')){var d=R();d.s=d.s.filter(function(x){return x.id!=sid});d.c=d.c.filter(function(x){return x.sid!=sid});d.l=d.l.filter(function(x){return x.sid!=sid});W(d);go()}}
+function edS(sid){var d=R(),s=d.s.find(function(x){return x.id==sid});if(!s)return;var nm=prompt('姓名：',s.name);if(nm===null)return;s.name=nm.trim()||s.name;var ph=prompt('手机号：',s.phone);if(ph!==null)s.phone=ph.trim();W(d);go()}
+function undoCk(sid){var d=R(),t3=td();var idx=-1;for(var i=d.c.length-1;i>=0;i--){if(d.c[i].sid==sid&&d.c[i].date==t3){idx=i;break}}if(idx<0){alert('今天没有签到记录');return}var s=d.s.find(function(x){return x.id==sid});if(s){s.used=Math.max(0,(s.used||0)-1);if(s.st=='expired')s.st='active'}d.c.splice(idx,1);W(d);go()}
+function exportD(){var d=R();var blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='fitness_backup_'+td()+'.json';a.click();alert('备份已下载')}
+function chPwd(){var np=prompt('新密码：','');if(!np)return;var d=R();d.p=np;W(d);alert('密码已更新')}
 go();
 </script></body></html>
