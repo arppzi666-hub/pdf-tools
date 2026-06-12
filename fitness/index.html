@@ -136,7 +136,7 @@ function indPause(sid){var d=R();d.l.push({id:id(),sid:sid,type:'individual',cre
 function indResume(sid){var d=R(),s=d.s.find(function(x){return x.id==sid});if(s)s.st='active';W(d);go()}
 function gp(){var d=R();d.l.push({id:id(),sid:'',type:'group',create:td()});d.s.forEach(function(x){if(x.st=='active')x.st='paused'});W(d);go()}
 function gr(){var d=R();d.s.forEach(function(x){if(x.st=='paused')x.st='active'});W(d);go()}
-function sl(sid){var d=R();if(d.l.filter(function(x){return x.sid==sid&&x.create&&x.create.substring(0,7)==td().substring(0,7)}).length>=2)return;d.l.push({id:id(),sid:sid,type:'individual',create:td()});var s=d.s.find(function(x){return x.id==sid});if(s)s.st='paused';W(d);go()}
+function sl(sid){var d=R();if(d.c.some(function(x){return x.sid==sid&&x.date==td()}))return;if(d.l.filter(function(x){return x.sid==sid&&x.create&&x.create.substring(0,7)==td().substring(0,7)}).length>=2)return;d.l.push({id:id(),sid:sid,type:'individual',create:td()});var s=d.s.find(function(x){return x.id==sid});if(s)s.st='paused';W(d);go()}
 function extend(sid){var d=R(),s=d.s.find(function(x){return x.id==sid});if(s){s.start=td();s.st='active';W(d);go()}}
 function ec(sid){var d=R(),s=d.s.find(function(x){return x.id==sid});if(!s)return;var nd=prompt(s.type=='monthly'?'修改天数（当前'+s.days+'天）：':'修改次数（当前'+s.sessions+'次）：',s.type=='monthly'?s.days:s.sessions);if(nd!==null){var v=parseInt(nd);if(v>0){if(s.type=='monthly')s.days=v;else{s.sessions=v;s.used=Math.min(s.used,v)}s.st='active';W(d);go()}}}
 function delS(sid){if(confirm('确认删除该学员？')){var d=R();d.s=d.s.filter(function(x){return x.id!=sid});d.c=d.c.filter(function(x){return x.sid!=sid});d.l=d.l.filter(function(x){return x.sid!=sid});W(d);go()}}
