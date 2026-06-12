@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>健身教练助手</title>
+<style>
+:root{--bg:#f0f5f9;--card:#fff;--text:#2c3e50;--sub:#7f8c8d;--pri:#2980b9;--green:#27ae60;--orange:#e67e22;--red:#e74c3c;--border:#dce6f0}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.container{max-width:480px;margin:0 auto;padding:12px}
+.card{background:var(--card);border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.card h2{font-size:15px;margin-bottom:10px}
+input,select,button{font-size:14px;padding:10px 12px;border:1px solid var(--border);border-radius:8px;width:100%;margin:4px 0}
+button{border:none;font-weight:600;cursor:pointer}
+.btn{padding:12px;border-radius:10px;text-align:center;width:100%}
+.btn-primary{background:var(--pri);color:#fff}
+.btn-green{background:var(--green);color:#fff}
+.btn-orange{background:var(--orange);color:#fff}
+.btn-red{background:var(--red);color:#fff}
+.btn-outline{background:#fff;border:1.5px solid var(--pri);color:var(--pri)}
+.btn-sm{padding:8px 14px;font-size:12px;width:auto}
+.badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600}
+.badge-active{background:#e8f8f0;color:var(--green)}
+.badge-paused{background:#fef5e7;color:var(--orange)}
+.badge-expired{background:#fdecea;color:var(--red)}
+.row{display:flex;gap:8px;align-items:center}
+.row-between{display:flex;justify-content:space-between;align-items:center}
+.col{flex:1}
+.stat{text-align:center;padding:8px}
+.stat-num{font-size:26px;font-weight:800}
+.stat-label{font-size:10px;color:var(--sub)}
+.tabs{display:flex;gap:4px;margin-bottom:12px}
+.tab{flex:1;padding:8px;text-align:center;background:var(--card);border-radius:8px;font-size:12px;cursor:pointer}
+.tab.active{background:var(--pri);color:#fff}
+.hidden{display:none!important}
+.list-item{padding:12px 0;border-bottom:1px solid #f0f0f0}
+.list-item:last-child{border-bottom:none}
+.gap-8{gap:8px}
+.mt-8{margin-top:8px}
+.mt-12{margin-top:12px}
+.mb-8{margin-bottom:8px}
+.text-sm{font-size:12px}
+.text-sub{color:var(--sub)}
+.text-center{text-align:center}
+.pill{display:inline-block;padding:4px 10px;border-radius:14px;margin:2px;font-size:11px;cursor:pointer}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* ====== Store ====== */
+const K='fc_web';
+function R(){try{let d=JSON.parse(localStorage.getItem(K)||'{}');d.students=d.students||[];d.checkins=d.checkins||[];d.leaves=d.leaves||[];d.settings=d.settings||{pwd:'123456',weekly:4,monthlyLeave:2};return d}catch(e){return{students:[],checkins:[],leaves:[],settings:{pwd:'123456',weekly:4,monthlyLeave:2}}}}
+function W(d){localStorage.setItem(K,JSON.stringify(d))}
+function uid(){return Date.now()+'_'+Math.random().toString(36).substr(2,6)}
+function fmt(d){if(!d)d=new Date();let y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return y+'-'+m+'-'+day}
+function ddiff(a,b){return Math.floor((new Date(b)-new Date(a))/(86400000))}
+
+/* ====== App ====== */
+let mode='login'; // login | coach | student
+let coachAuth=false;
+let studentPhone='';
+
+function render(){
+  let d=R();
+  let h='';
+  if(mode==='login'){
+    h=`<div class="container" style="padding-top:40px"><div style="text-align:center;margin-bottom:24px">
+      <div style="font-size:48px">💧</div>
+      <div style="font-size:20px;font-weight:700;margin-top:8px">健身教练助手</div>
+    </div>
+    <div class="card">
+      <h2>👤 学员登录</h2>
+      <input id="stuPhone" type="tel" placeholder="输入手机号码" maxlength="11">
+      <button class="btn btn-primary mt-8" onclick="sLogin()">登录查看课程卡</button>
+      <div class="text-sm text-sub text-center mt-8" id="sMsg"></div>
+    </div>
+    <div class="card">
+      <h2>🔒 教练后台</h2>
+      <input id="coachPwd" type="password" placeholder="教练密码">
+      <button class="btn btn-outline mt-8" onclick="cLogin()">进入后台</button>
+      <div class="text-sm text-sub text-center mt-8" id="cMsg"></div>
+    </div></div>`;
+  }
+  else if(mode==='coach') renderCoach(d);
+  else if(mode==='student') renderStudent(d);
+  document.getElementById('app').innerHTML=h;
+}
+
+/* ====== Coach ====== */
+let cTab='dash';
+
+function renderCoach(d){
+  let s=d.students;
+  let today=fmt();
+  let chk=d.checkins.filter(c=>c.date===today);
+  let active=s.filter(s=>s.status==='active');
+  let paused=s.filter(s=>s.status==='paused');
+  let expired=s.filter(s=>s.status==='expired');
+  let expSoon=active.filter(s=>s.days>0&&ddiff(s.start||today,today)>=s.days-7);
+
+  let nav=`<div class="container"><div class="row-between mb-8">
+    <div style="font-weight:700;font-size:18px">💧 教练后台</div>
+    <button class="btn btn-sm btn-outline" onclick="mode='login';render()">退出</button>
+  </div>
+  <div class="tabs">
+    <div class="tab ${cTab==='dash'?'active':''}" onclick="cTab='dash';render()">📊 总览</div>
+    <div class="tab ${cTab==='list'?'active':''}" onclick="cTab='list';render()">👥 学员</div>
+    <div class="tab ${cTab==='add'?'active':''}" onclick="cTab='add';render()">+ 添加</div>
+    <div class="tab ${cTab==='leave'?'active':''}" onclick="cTab='leave';render()">⏸ 请假</div>
+  </div>`;
+
+  if(cTab==='dash'){
+    let h=`<div class="row" style="gap:6px;margin-bottom:10px">
+      <div class="card col stat"><div class="stat-num" style="color:var(--green)">${active.length}</div><div class="stat-label">活跃</div></div>
+      <div class="card col stat"><div class="stat-num">${chk.length}</div><div class="stat-label">今日签到</div></div>
+      <div class="card col stat"><div class="stat-num" style="color:var(--orange)">${expSoon.length}</div><div class="stat-label">即将到期</div></div>
+      <div class="card col stat"><div class="stat-num" style="color:var(--red)">${expired.length}</div><div class="stat-label">已过期</div></div>
+    </div>
+    <div class="card"><h2>📋 今日签到 (${chk.length})</h2>${chk.map(c=>{let st=s.find(x=>x.id===c.sid);return`<div class="list-item"><span>${st?st.name:'?'}</span><span class="badge badge-active">✓</span></div>`}).join('')||'<div class="text-sm text-sub text-center">暂无</div>'}</div>
+    <div class="card"><h2>⚠️ 即将到期</h2>${expSoon.map(x=>`<div class="list-item row-between"><span>${x.name}</span><span class="badge badge-expired">${x.days-ddiff(x.start||today,today)}天</span><button class="btn btn-sm btn-green" onclick="extendDays('${x.id}')">续期</button></div>`).join('')||'<div class="text-sm text-sub text-center">暂无</div>'}</div>`;
+    nav+=h;
+    nav+=`<div class="card"><div class="row" style="gap:8px"><button class="btn btn-orange col" onclick="groupPause()">⏸ 集体请假</button><button class="btn btn-green col" onclick="groupResume()">▶ 集体恢复</button></div></div>`;
+  }
+  else if(cTab==='list'){
+    nav+=s.map(x=>{
+      let remaining=x.days-ddiff(x.start||today,today);
+      let bcolor=x.status==='active'?'badge-active':x.status==='paused'?'badge-paused':'badge-expired';
+      let btext=x.status==='active'?'进行中':x.status==='paused'?'已暂停':'已过期';
+      return`<div class="card"><div class="row-between"><div><strong>${x.name}</strong> <span class="text-sm text-sub">${x.phone}</span></div><span class="badge ${bcolor}">${btext}</span></div>
+      <div class="text-sm text-sub mt-8">${x.type==='monthly'?`包月 · ${Math.max(0,remaining)}天 / ${x.days}天`:`次卡 · ${(x.sessions||0)-(x.used||0)}次 / ${x.sessions}次`} · ¥${x.price||0} · ${x.start||''}</div>
+      <div class="row gap-8 mt-8">
+        ${x.status==='active'?`<button class="btn btn-sm btn-orange" onclick="indPause('${x.id}')">请假</button><button class="btn btn-sm btn-green" onclick="checkin('${x.id}')">签到</button>`:''}
+        ${x.status==='paused'?`<button class="btn btn-sm btn-green" onclick="indResume('${x.id}')">恢复</button>`:''}
+        <button class="btn btn-sm btn-outline" onclick="editCard('${x.id}')">✏️ 改卡</button>
+      </div></div>`;
+    }).join('')||'<div class="card text-center text-sub">暂无学员</div>';
+  }
+  else if(cTab==='add'){
+    nav+=`<div class="card"><h2>+ 添加学员</h2>
+      <input id="aname" placeholder="姓名 *"><input id="aphone" type="tel" placeholder="手机号">
+      <div class="row gap-8"><select id="atype" class="col"><option value="monthly">包月卡</option><option value="session">次卡</option></select>
+      <input id="adays" type="number" placeholder="天数/次数" class="col" value="30"><input id="aprice" type="number" placeholder="价格(元)" class="col" value=""></div>
+      <button class="btn btn-primary mt-8" onclick="addStudent()">保存</button></div>`;
+  }
+  else if(cTab==='leave'){
+    let now=new Date(),m=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+    let lvs=d.leaves.filter(l=>l.create&&l.create.startsWith(m));
+    nav+=`<div class="card"><h2>⏸ 请假操作</h2>
+      <div class="row gap-8"><button class="btn btn-orange col" onclick="groupPause()">集体请假</button><button class="btn btn-green col" onclick="groupResume()">恢复全部</button></div></div>
+    <div class="card"><h2>暂停中</h2>${paused.map(x=>`<div class="list-item row-between"><span>${x.name}</span><button class="btn btn-sm btn-green" onclick="indResume('${x.id}')">恢复</button></div>`).join('')||'<div class="text-sm text-sub text-center">无</div>'}</div>
+    <div class="card"><h2>本月请假记录 (${lvs.length})</h2>${lvs.map(l=>{let st=s.find(x=>x.id===l.sid);return`<div class="list-item"><span>${st?st.name:'?'}</span><span class="text-sm text-sub">${l.type==='group'?'集体':'个人'} · ${l.create}</span></div>`}).join('')||'<div class="text-sm text-sub text-center">无</div>'}</div>`;
+  }
+  nav+='</div>';
+  document.getElementById('app').innerHTML=nav;
+}
+
+/* ====== Student ====== */
+function renderStudent(d){
+  let s=d.students.find(x=>x.phone===studentPhone);
+  if(!s){
+    document.getElementById('app').innerHTML=`<div class="container" style="padding-top:60px"><div class="card text-center"><div style="font-size:48px">😿</div><div style="font-size:16px;margin-top:12px">未找到学员信息</div><div class="text-sm text-sub mt-8">手机号：${studentPhone}</div><button class="btn btn-outline mt-12" onclick="mode='login';render()">返回登录</button></div></div>`;
+    return;
+  }
+  let remaining=s.days-ddiff(s.start||fmt(),fmt());
+  let used=s.used||0;
+  let total=s.sessions||0;
+  let today=fmt();
+  let checkedToday=d.checkins.some(c=>c.sid===s.id&&c.date===today);
+  let now=new Date(),m=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+  let monthLeaves=d.leaves.filter(l=>l.sid===s.id&&l.create&&l.create.startsWith(m)).length;
+  let maxLeave=d.settings.monthlyLeave||2;
+  let paused=s.status==='paused';
+
+  let h=`<div class="container"><div class="row-between mb-8">
+    <div style="font-weight:700;font-size:18px">👤 ${s.name}</div>
+    <button class="btn btn-sm btn-outline" onclick="mode='login';render()">退出</button>
+  </div>
+  <div class="card" style="text-align:center">
+    <div style="font-size:12px;color:var(--sub)">${s.type==='monthly'?'包月卡':'次卡'} · ${s.status==='active'?'进行中':s.status==='paused'?'已暂停':'已过期'}</div>
+    <div style="font-size:48px;font-weight:800;margin:8px 0;color:${s.status==='active'?'var(--green)':'var(--orange)'}">
+      ${s.type==='monthly'?Math.max(0,remaining):(total-used)}<span style="font-size:16px">${s.type==='monthly'?'天':'次'}</span>
+    </div>
+    <div class="text-sm text-sub">总${s.type==='monthly'?'天数':'次数'}：${s.type==='monthly'?s.days+'天':total+'次'} · ¥${s.price||0} · ${s.start||''}</div>
+  </div>`;
+
+  if(s.status==='active'){
+    h+=`<div class="row gap-8">
+      <button class="btn btn-green col" ${checkedToday?'disabled':''} onclick="checkin('${s.id}')">${checkedToday?'今日已签到':'✅ 打卡签到'}</button>
+      <button class="btn btn-orange col" ${monthLeaves>=maxLeave?'disabled':''} onclick="studentLeave('${s.id}')">📝 请假(${monthLeaves}/${maxLeave})</button>
+    </div>`;
+    if(monthLeaves>=maxLeave) h+=`<div class="text-sm text-sub text-center mt-8">本月请假次数已用完</div>`;
+  }
+  h+='</div>';
+  document.getElementById('app').innerHTML=h;
+}
+
+/* ====== Actions ====== */
+function cLogin(){ let d=R(); if(document.getElementById('coachPwd').value===d.settings.pwd){ coachAuth=true; mode='coach'; render(); } else document.getElementById('cMsg').textContent='密码错误'; }
+function sLogin(){ let p=document.getElementById('stuPhone').value.trim(); let d=R(); if(d.students.some(s=>s.phone===p)){ studentPhone=p; mode='student'; render(); } else document.getElementById('sMsg').textContent='未找到该号码的学员'; }
+function addStudent(){ let d=R(); let name=document.getElementById('aname').value.trim(); let phone=document.getElementById('aphone').value.trim(); let type=document.getElementById('atype').value; let nd=parseInt(document.getElementById('adays').value)||30; let price=parseFloat(document.getElementById('aprice').value)||0; if(!name)return; d.students.push({id:uid(),name,phone,type,days:type==='monthly'?nd:0,sessions:type==='session'?nd:0,used:0,price,start:fmt(),status:'active'}); W(d); render(); }
+function checkin(sid){ let d=R(); let s=d.students.find(x=>x.id===sid); if(!s)return; let today=fmt(); if(s.type==='session'&&(s.sessions-(s.used||0))<=0)return; if(s.type==='monthly'){ let ws=new Date(today);ws.setDate(ws.getDate()-ws.getDay());let we=new Date(ws);we.setDate(we.getDate()+7); let wc=d.checkins.filter(c=>c.sid===sid&&c.date>=fmt(ws)&&c.date<fmt(we)).length; if(wc>=(d.settings.weekly||4))return; } s.used=(s.used||0)+1; d.checkins.push({id:uid(),sid,date:today}); if(s.type==='monthly'&&ddiff(s.start,today)>=s.days)s.status='expired'; if(s.type==='session'&&(s.sessions-s.used)<=0)s.status='expired'; W(d); render(); }
+function studentLeave(sid){ let d=R(); let now=new Date(),m=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0'); let mc=d.leaves.filter(l=>l.sid===sid&&l.create&&l.create.startsWith(m)).length; if(mc>=(d.settings.monthlyLeave||2))return; d.leaves.push({id:uid(),sid,type:'individual',create:fmt()}); let s=d.students.find(x=>x.id===sid); if(s)s.status='paused'; W(d); render(); }
+function indPause(sid){ let d=R(); d.leaves.push({id:uid(),sid,type:'individual',create:fmt()}); let s=d.students.find(x=>x.id===sid); if(s)s.status='paused'; W(d); render(); }
+function indResume(sid){ let d=R(); let s=d.students.find(x=>x.id===sid); if(s)s.status='active'; W(d); render(); }
+function groupPause(){ let d=R(); d.leaves.push({id:uid(),sid:'',type:'group',create:fmt()}); d.students.forEach(s=>{if(s.status==='active')s.status='paused'}); W(d); render(); }
+function groupResume(){ let d=R(); d.students.forEach(s=>{if(s.status==='paused')s.status='active'}); W(d); render(); }
+function extendDays(sid){ let d=R(); let s=d.students.find(x=>x.id===sid); if(!s)return; s.start=fmt(); s.status='active'; W(d); render(); }
+function editCard(sid){ let d=R();let s=d.students.find(x=>x.id===sid);if(!s)return;let nd=prompt(s.type==='monthly'?'新天数：':'新次数：',s.type==='monthly'?s.days:s.sessions);if(nd!==null){let v=parseInt(nd);if(v>0){if(s.type==='monthly')s.days=v;else s.sessions=v;if(s.type==='session')s.used=Math.min(s.used,v);s.status='active';W(d);render();}}}
+
+render();
+</script>
+</body>
+</html>
