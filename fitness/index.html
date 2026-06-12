@@ -36,9 +36,12 @@ button{border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:poin
 </style></head>
 <body><div id="app"></div>
 <script>
-var K='fc5';
-function R(){try{return JSON.parse(localStorage.getItem(K))||{s:[],c:[],l:[],p:'123456'}}catch(e){return{s:[],c:[],l:[],p:'123456'}}}
-function W(d){localStorage.setItem(K,JSON.stringify(d))}
+var BID='6a2bd1c9f5f4af5e29e5530a',BKEY='$2a$10$r0eMfqvul.BF5Af53eOtuOaqsfZEIHj93Q3Ri2AMnGYy9YeqFEgnG';
+var K='fc5',_cache=null;
+function R(){if(_cache)return _cache;try{var raw=localStorage.getItem(K);if(raw)_cache=JSON.parse(raw);}catch(e){}if(!_cache)_cache={s:[],c:[],l:[],p:'123456'};return _cache}
+function W(d){_cache=d;localStorage.setItem(K,JSON.stringify(d));fetch('https://api.jsonbin.io/v3/b/'+BID,{method:'PUT',headers:{'X-Master-Key':BKEY,'Content-Type':'application/json'},body:JSON.stringify(d)}).catch(function(){})}
+// Sync from cloud on load
+(function(){try{fetch('https://api.jsonbin.io/v3/b/'+BID+'/latest',{headers:{'X-Master-Key':BKEY}}).then(function(r){return r.json()}).then(function(j){var d=j.record;_cache=d;localStorage.setItem(K,JSON.stringify(d));go()}).catch(function(){go()})}catch(e){go()}})();
 function id(){return Date.now()+'_'+Math.random().toString(36).substr(2,6)}
 function td(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function dd(a,b){return Math.floor((new Date(b)-new Date(a))/86400000)}
