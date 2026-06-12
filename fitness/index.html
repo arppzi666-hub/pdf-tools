@@ -1,38 +1,51 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>健身教练助手</title>
 <style>
-body{font-family:sans-serif;background:#f0f5f9;margin:0;color:#2c3e50}
-.container{max-width:500px;margin:0 auto;padding:14px}
-.card{background:#fff;border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-.card h3{font-size:15px;margin:0 0 12px 0}
-input,select{width:100%;padding:10px;border:1.5px solid #dce6f0;border-radius:10px;font-size:14px;margin: 0 0 6px 0;background:#f8fafc;box-sizing:border-box}
-input:focus,select:focus{outline:none;border-color:#2980b9;background:#fff}
-button{border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer}
-.btn{padding:12px 16px;width:100%}
-.btn-blue{background:#2980b9;color:#fff}
-.btn-green{background:#27ae60;color:#fff}
-.btn-orange{background:#e67e22;color:#fff}
-.btn-red{background:#e74c3c;color:#fff}
-.btn-outline{background:#fff;border:1.5px solid #2980b9;color:#2980b9}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:linear-gradient(180deg,#e8f0f8,#dce6f0);min-height:100vh;color:#1e293b}
+.container{max-width:520px;margin:0 auto;padding:16px}
+.card{background:#fff;border-radius:16px;padding:20px 18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,0,0,.06);transition:transform .15s}
+.card h3{font-size:15px;font-weight:700;margin:0 0 14px 0;color:#1e293b;display:flex;align-items:center;gap:6px}
+input,select{width:100%;padding:12px 14px;border:2px solid #e2e8f0;border-radius:12px;font-size:14px;margin:0 0 8px 0;background:#f8fafc;box-sizing:border-box;transition:border .2s}
+input:focus,select:focus{outline:none;border-color:#3b82f6;background:#fff;box-shadow:0 0 0 3px rgba(59,130,246,.1)}
+button{border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
+button:active{transform:scale(.97)}
+.btn{padding:14px 18px;width:100%}
+.btn-blue{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;box-shadow:0 2px 8px rgba(37,99,235,.3)}
+.btn-green{background:linear-gradient(135deg,#10b981,#059669);color:#fff;box-shadow:0 2px 8px rgba(5,150,105,.3)}
+.btn-orange{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;box-shadow:0 2px 8px rgba(217,119,6,.3)}
+.btn-red{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;box-shadow:0 2px 8px rgba(220,38,38,.3)}
+.btn-outline{background:#fff;border:2px solid #3b82f6;color:#3b82f6}
 .btn-sm{padding:8px 14px;font-size:12px;width:auto}
-.badge{display:inline-block;padding:3px 10px;border-radius:14px;font-size:11px;font-weight:600}
-.bg-green{background:#e8f8f0;color:#27ae60}
-.bg-orange{background:#fef5e7;color:#e67e22}
-.bg-red{background:#fdecea;color:#e74c3c}
-.row{display:flex;gap:6px;align-items:center}
+.badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700}
+.bg-green{background:#d1fae5;color:#065f46}
+.bg-orange{background:#fef3c7;color:#92400e}
+.bg-red{background:#fee2e2;color:#991b1b}
+.row{display:flex;gap:8px;align-items:center}
 .row-bw{display:flex;justify-content:space-between;align-items:center}
 .col{flex:1}
-.stats{display:flex;gap:6px;margin-bottom:12px}
-.stat{flex:1;background:#fff;border-radius:14px;padding:14px 8px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-.stat-n{font-size:28px;font-weight:800}.stat-l{font-size:10px;color:#7f8c8d;margin-top:2px}
-.tabs{display:flex;gap:4px;margin-bottom:12px}
-.tab{flex:1;padding:10px;text-align:center;background:#fff;border-radius:10px;font-size:13px;cursor:pointer}
-.tab.on{background:#2980b9;color:#fff}
-.lr{padding:10px 0;border-bottom:1px solid #f2f4f6;display:flex;justify-content:space-between;align-items:center}
+.stats{display:flex;gap:10px;margin-bottom:16px}
+.stat{flex:1;background:#fff;border-radius:16px;padding:18px 10px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.06);position:relative;overflow:hidden}
+.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.stat:nth-child(1)::before{background:#10b981}.stat:nth-child(2)::before{background:#3b82f6}.stat:nth-child(3)::before{background:#f59e0b}.stat:nth-child(4)::before{background:#ef4444}
+.stat-n{font-size:32px;font-weight:800;letter-spacing:-1px}
+.stat-l{font-size:11px;color:#94a3b8;margin-top:4px;text-transform:uppercase;letter-spacing:1px}
+.tabs{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto}
+.tab{flex:1;padding:12px 8px;text-align:center;background:#fff;border-radius:12px;font-size:13px;cursor:pointer;border:2px solid transparent;transition:all .15s;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tab.on{background:#2563eb;color:#fff;border-color:#2563eb;box-shadow:0 4px 12px rgba(37,99,235,.25)}
+.tab:hover:not(.on){border-color:#bfdbfe}
+.lr{padding:14px 0;border-bottom:1px solid #f1f5f9;display:flex;justify-content:space-between;align-items:center}
 .lr:last-child{border-bottom:none}
-.sub{font-size:12px;color:#7f8c8d}.tc{text-align:center}.mt8{margin-top:8px}.mt12{margin-top:12px}.mb12{margin-bottom:12px}
-.login{max-width:360px;margin:50px auto;padding:20px;text-align:center}
-.login .icon{font-size:50px}.login h1{font-size:20px;margin:8px 0 20px}
+.sub{font-size:13px;color:#94a3b8}.tc{text-align:center}.mt8{margin-top:8px}.mt12{margin-top:12px}.mb12{margin-bottom:12px}
+.login{max-width:380px;margin:60px auto 0;padding:24px;text-align:center}
+.login .icon{font-size:56px;margin-bottom:4px}
+.login h1{font-size:22px;font-weight:800;margin:4px 0 24px;color:#1e293b}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font-size:12px}
+.cal-cell{padding:10px 4px;border-radius:10px;cursor:pointer;transition:all .15s}
+.cal-cell:hover{background:#f1f5f9}
+.cal-cell.has{background:#d1fae5;color:#065f46;font-weight:700}
+.cal-cell.has:hover{background:#a7f3d0}
+.cal-dot{font-size:9px;margin-top:2px}
 </style></head>
 <body><div id="app"></div>
 <script>
@@ -108,14 +121,13 @@ function coachUI(d){
     var cc={};
     d.c.forEach(function(x){if(x.date&&x.date.startsWith(mn)){cc[x.date]=cc[x.date]||[];cc[x.date].push(x.sid)}});
     o+='<div class="card"><h3>📅 '+yr+'年'+(mo+1)+'月</h3>';
-    o+='<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font-size:11px">';
+    o+='<div class="cal-grid">';
     var hd=['日','一','二','三','四','五','六'];
-    for(var i=0;i<7;i++)o+='<div style="color:#7f8c8d;padding:4px">'+hd[i]+'</div>';
+    for(var i=0;i<7;i++)o+='<div style="color:#94a3b8;font-size:11px;padding:8px 0">'+hd[i]+'</div>';
     for(var i=0;i<fday;i++)o+='<div></div>';
     for(var d2=1;d2<=lday;d2++){
       var dt=mn+'-'+String(d2).padStart(2,'0'),cnt=cc[dt]?cc[dt].length:0;
-      var bg=cnt>0?'#e8f8f0':'',clr=cnt>0?'#27ae60':'';
-      o+='<div style="padding:6px 2px;border-radius:8px;background:'+bg+';color:'+clr+';cursor:pointer" onclick="showDay(\''+dt+'\')"><div>'+d2+'</div>'+(cnt>0?'<div style="font-size:9px">'+cnt+'人</div>':'')+'</div>';
+      o+='<div class="cal-cell'+(cnt>0?' has':'')+'" onclick="showDay(\''+dt+'\')"><div>'+d2+'</div>'+(cnt>0?'<div class="cal-dot">'+cnt+'人</div>':'')+'</div>';
     }
     o+='</div></div>';
     if(sday){
