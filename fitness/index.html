@@ -1,169 +1,140 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>健身教练助手</title>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>健身教练助手</title>
 <style>
-:root{--bg:#f0f5f9;--card:#fff;--text:#2c3e50;--sub:#7f8c8d;--pri:#2980b9;--green:#27ae60;--orange:#e67e22;--red:#e74c3c}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+body{font-family:sans-serif;background:#f0f5f9;margin:0;color:#2c3e50}
 .container{max-width:500px;margin:0 auto;padding:14px}
-.card{background:var(--card);border-radius:14px;padding:18px 16px;margin-bottom:12px;box-shadow:0 1px 6px rgba(0,0,0,.04)}
-.card h3{font-size:15px;margin-bottom:12px}
-input,select{font-size:14px;padding:10px 12px;border:1.5px solid #dce6f0;border-radius:10px;width:100%;background:#f8fafc;margin:5px 0}
-input:focus,select:focus{outline:none;border-color:var(--pri);background:#fff}
-button{border:none;font-weight:600;cursor:pointer;border-radius:10px;font-size:14px}
+.card{background:#fff;border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.card h3{font-size:15px;margin:0 0 12px 0}
+input,select{width:100%;padding:10px;border:1.5px solid #dce6f0;border-radius:10px;font-size:14px;margin: 0 0 6px 0;background:#f8fafc;box-sizing:border-box}
+input:focus,select:focus{outline:none;border-color:#2980b9;background:#fff}
+button{border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer}
 .btn{padding:12px 16px;width:100%}
-.btn-pri{background:var(--pri);color:#fff}
-.btn-green{background:var(--green);color:#fff}
-.btn-orange{background:var(--orange);color:#fff}
-.btn-red{background:var(--red);color:#fff}
-.btn-outline{background:#fff;border:1.5px solid var(--pri);color:var(--pri)}
+.btn-blue{background:#2980b9;color:#fff}
+.btn-green{background:#27ae60;color:#fff}
+.btn-orange{background:#e67e22;color:#fff}
+.btn-red{background:#e74c3c;color:#fff}
+.btn-outline{background:#fff;border:1.5px solid #2980b9;color:#2980b9}
 .btn-sm{padding:8px 14px;font-size:12px;width:auto}
 .badge{display:inline-block;padding:3px 10px;border-radius:14px;font-size:11px;font-weight:600}
-.bg-active{background:#e8f8f0;color:var(--green)}
-.bg-paused{background:#fef5e7;color:var(--orange)}
-.bg-expired{background:#fdecea;color:var(--red)}
-.row{display:flex;gap:8px;align-items:center}
+.bg-green{background:#e8f8f0;color:#27ae60}
+.bg-orange{background:#fef5e7;color:#e67e22}
+.bg-red{background:#fdecea;color:#e74c3c}
+.row{display:flex;gap:6px;align-items:center}
 .row-bw{display:flex;justify-content:space-between;align-items:center}
 .col{flex:1}
-.stat-grid{display:flex;gap:8px;margin-bottom:12px}
-.stat{flex:1;background:var(--card);border-radius:14px;padding:14px 8px;text-align:center;box-shadow:0 1px 6px rgba(0,0,0,.04)}
-.stat-n{font-size:30px;font-weight:800;letter-spacing:-1px}
-.stat-l{font-size:10px;color:var(--sub);margin-top:2px}
+.stats{display:flex;gap:6px;margin-bottom:12px}
+.stat{flex:1;background:#fff;border-radius:14px;padding:14px 8px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.stat-n{font-size:28px;font-weight:800}.stat-l{font-size:10px;color:#7f8c8d;margin-top:2px}
 .tabs{display:flex;gap:4px;margin-bottom:12px}
-.tab{flex:1;padding:10px;text-align:center;background:var(--card);border-radius:10px;font-size:13px;cursor:pointer;border:1px solid transparent}
-.tab.on{background:var(--pri);color:#fff}
-.list-row{padding:12px 0;border-bottom:1px solid #f2f4f6;display:flex;justify-content:space-between;align-items:center}
-.list-row:last-child{border-bottom:none}
-.mt-8{margin-top:8px}.mt-12{margin-top:12px}.mb-12{margin-bottom:12px}
-.sub{font-size:12px;color:var(--sub)}.tc{text-align:center}
-.login-box{max-width:360px;margin:60px auto 0;padding:24px;text-align:center}
-.login-box .icon{font-size:56px}
-.login-box h1{font-size:20px;margin:8px 0 24px}
-</style>
-</head>
+.tab{flex:1;padding:10px;text-align:center;background:#fff;border-radius:10px;font-size:13px;cursor:pointer}
+.tab.on{background:#2980b9;color:#fff}
+.lr{padding:10px 0;border-bottom:1px solid #f2f4f6;display:flex;justify-content:space-between;align-items:center}
+.lr:last-child{border-bottom:none}
+.sub{font-size:12px;color:#7f8c8d}.tc{text-align:center}.mt8{margin-top:8px}.mt12{margin-top:12px}.mb12{margin-bottom:12px}
+.login{max-width:360px;margin:50px auto;padding:20px;text-align:center}
+.login .icon{font-size:50px}.login h1{font-size:20px;margin:8px 0 20px}
+</style></head>
 <body><div id="app"></div>
 <script>
-const K='fc_v3';
+var K='fc5';
 function R(){try{return JSON.parse(localStorage.getItem(K))||{s:[],c:[],l:[],p:'123456'}}catch(e){return{s:[],c:[],l:[],p:'123456'}}}
 function W(d){localStorage.setItem(K,JSON.stringify(d))}
-function uid(){return Date.now()+'_'+Math.random().toString(36).substr(2,6)}
-function now(){let d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
-function ddiff(a,b){return Math.floor((new Date(b)-new Date(a))/86400000)}
-function fmtd(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function id(){return Date.now()+'_'+Math.random().toString(36).substr(2,6)}
+function td(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function dd(a,b){return Math.floor((new Date(b)-new Date(a))/86400000)}
+function td2(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 
-let page='login',ctab='dash',sphone='';
-function h(t,...c){return t.reduce((s,x,i)=>s+x+(c[i]||''),'')}
+var pg='login',tab='dash',sp='';
 
-function render(){
-  let d=R(),out='';
-  if(page==='login') out=loginUI();
-  else if(page==='coach') out=coachUI(d);
-  else if(page==='student') out=studentUI(d);
-  document.getElementById('app').innerHTML=out;
+function go(){
+  try{doGo()}catch(e){document.getElementById('app').innerHTML='<div class="login"><div class="icon">!</div><h1>Error</h1><div class="sub">'+e.message+'</div><button class="btn btn-outline mt12" onclick="localStorage.clear();location.reload()">Reset</button></div>'}
+}
+function doGo(){
+  var d=R(),o='';
+  if(pg=='login')o=loginUI();
+  else if(pg=='coach')o=coachUI(d);
+  else if(pg=='student')o=stuUI(d);
+  document.getElementById('app').innerHTML=o;
 }
 
 function loginUI(){
-  return h`<div class="login-box">
-    <div class="icon">💧</div><h1>健身教练助手</h1>
-    <div class="card" style="text-align:left"><h3>👤 学员登录</h3>
-      <input id="sphoneIn" type="tel" placeholder="手机号码" maxlength="11">
-      <button class="btn btn-pri mt-8" onclick="sLogin()">查看我的课程卡</button>
-      <div class="sub tc mt-8" id="smsg"></div>
-    </div>
-    <div class="card" style="text-align:left"><h3>🔒 教练后台</h3>
-      <input id="cpwdIn" type="password" placeholder="教练密码">
-      <button class="btn btn-outline mt-8" onclick="cLogin()">进入后台管理</button>
-      <div class="sub tc mt-8" id="cmsg"></div>
-    </div>
-  </div>`;
+  return'<div class="login"><div class="icon">💧</div><h1>健身教练助手</h1>'+
+  '<div class="card" style="text-align:left"><h3>👤 学员登录</h3><input id="spIn" type="tel" placeholder="手机号码" maxlength="11"><button class="btn btn-blue mt8" onclick="sLogin()">查看课程卡</button><div class="sub tc mt8" id="sm"></div></div>'+
+  '<div class="card" style="text-align:left"><h3>🔒 教练后台</h3><input id="cpIn" type="password" placeholder="教练密码"><button class="btn btn-outline mt8" onclick="cLogin()">进入后台</button><div class="sub tc mt8" id="cm"></div></div></div>';
 }
 
 function coachUI(d){
-  let s=d.s||[],today=now();
-  let active=s.filter(x=>x.st==='active'),paused=s.filter(x=>x.st==='paused'),expired=s.filter(x=>x.st==='expired');
-  let chk=d.c.filter(x=>x.date===today);
-  let expSoon=active.filter(x=>x.type==='monthly'&&x.days-ddiff(x.start||today,today)<=7);
+  var s=d.s||[],t=td();
+  var ac=s.filter(function(x){return x.st=='active';}),ps=s.filter(function(x){return x.st=='paused';});
+  var ck=d.c.filter(function(x){return x.date==t;});
+  var es=ac.filter(function(x){return x.type=='monthly'&&x.days-dd(x.start||t,t)<=7;});
 
-  let nav=h`<div class="container">
-    <div class="row-bw mb-12"><div style="font-size:20px;font-weight:700">💧 教练后台</div><button class="btn btn-sm btn-outline" onclick="page='login';render()">退出</button></div>
-    <div class="tabs">
-      <div class="tab ${ctab==='dash'?'on':''}" onclick="ctab='dash';render()">📊 概况</div>
-      <div class="tab ${ctab==='list'?'on':''}" onclick="ctab='list';render()">👥 学员</div>
-      <div class="tab ${ctab==='add'?'on':''}" onclick="ctab='add';render()">+ 添加</div>
-      <div class="tab ${ctab==='pause'?'on':''}" onclick="ctab='pause';render()">⏸ 请假</div>
-    </div>`;
+  var o='<div class="container"><div class="row-bw mb12"><div style="font-size:20px;font-weight:700">💧 教练后台</div><button class="btn btn-sm btn-outline" onclick="pg=\'login\';go()">退出</button></div>';
+  o+='<div class="tabs"><div class="tab '+(tab=='dash'?'on':'')+'" onclick="tab=\'dash\';go()">📊 概况</div><div class="tab '+(tab=='list'?'on':'')+'" onclick="tab=\'list\';go()">👥 学员</div><div class="tab '+(tab=='add'?'on':'')+'" onclick="tab=\'add\';go()">+ 添加</div><div class="tab '+(tab=='pause'?'on':'')+'" onclick="tab=\'pause\';go()">⏸ 请假</div></div>';
 
-  if(ctab==='dash'){
-    nav+=h`<div class="stat-grid">
-      <div class="stat" onclick="ctab='list';render()"><div class="stat-n" style="color:var(--green)">${active.length}</div><div class="stat-l">活跃学员</div></div>
-      <div class="stat"><div class="stat-n">${chk.length}</div><div class="stat-l">今日签到</div></div>
-      <div class="stat"><div class="stat-n" style="color:var(--orange)">${expSoon.length}</div><div class="stat-l">即将到期</div></div>
-      <div class="stat"><div class="stat-n" style="color:var(--red)">${expired.length}</div><div class="stat-l">已过期</div></div>
-    </div>`;
-    if(expSoon.length) nav+=h`<div class="card"><h3>⚠️ 即将到期</h3>${expSoon.map(x=>h`<div class="list-row"><div><strong>${x.name}</strong><span class="sub"> ${x.phone}</span></div><span class="badge bg-expired">${x.days-ddiff(x.start||today,today)}天</span><button class="btn btn-sm btn-green" onclick="extend('${x.id}')">续期</button></div>`).join('')}</div>`;
-    nav+=h`<div class="card"><h3>📋 今日签到 ${chk.length}人</h3>${chk.length?chk.map(c=>{let st=s.find(x=>x.id===c.sid);return h`<div class="list-row"><span>${st?st.name:'?'}</span><span class="badge bg-active">✓</span></div>`}).join(''):'<div class="sub tc">暂无</div>'}</div>`;
+  if(tab=='dash'){
+    o+='<div class="stats"><div class="stat"><div class="stat-n" style="color:#27ae60">'+ac.length+'</div><div class="stat-l">活跃学员</div></div><div class="stat"><div class="stat-n">'+ck.length+'</div><div class="stat-l">今日签到</div></div><div class="stat"><div class="stat-n" style="color:#e67e22">'+es.length+'</div><div class="stat-l">即将到期</div></div><div class="stat"><div class="stat-n" style="color:#e74c3c">'+s.filter(function(x){return x.st=='expired'}).length+'</div><div class="stat-l">已过期</div></div></div>';
+    if(es.length){o+='<div class="card"><h3>即将到期</h3>';for(var i=0;i<es.length;i++){var x=es[i],r=x.days-dd(x.start||t,t);o+='<div class="lr"><div><strong>'+x.name+'</strong><span class="sub"> '+x.phone+'</span></div><span class="badge bg-red">'+r+'天</span><button class="btn btn-sm btn-green" onclick="extend(\''+x.id+'\')">续期</button></div>'}o+='</div>';}
+    o+='<div class="card"><h3>今日签到 '+ck.length+'人</h3>';
+    for(var i=0;i<ck.length;i++){var c=ck[i],st=s.find(function(v){return v.id==c.sid});o+='<div class="lr"><span>'+(st?st.name:'?')+'</span><span class="badge bg-green">已签到</span></div>'}
+    if(!ck.length)o+='<div class="sub tc">暂无</div>';o+='</div>';
   }
-  else if(ctab==='list'){
-    nav+=s.map(x=>{
-      let rem=x.type==='monthly'?Math.max(0,x.days-ddiff(x.start||today,today)):(x.sessions||0)-(x.used||0);
-      let b=x.st==='active'?'bg-active':x.st==='paused'?'bg-paused':'bg-expired';
-      let bt=x.st==='active'?'进行中':x.st==='paused'?'已暂停':'已过期';
-      return h`<div class="card"><div class="row-bw"><div><strong>${x.name}</strong><span class="sub"> ${x.phone}</span></div><span class="badge ${b}">${bt}</span></div>
-        <div class="sub mt-8">${x.type==='monthly'?'包月 · '+rem+'天 / '+x.days+'天':'次卡 · '+rem+'次 / '+(x.sessions||0)+'次'} · ¥${x.price||0} · ${x.start||''}</div>
-        <div class="row mt-8" style="gap:6px">
-          ${x.st==='active'?h`<button class="btn btn-sm btn-orange" onclick="indPause('${x.id}')">请假</button><button class="btn btn-sm btn-green" onclick="doCheckin('${x.id}')">签到</button>`:''}
-          ${x.st==='paused'?h`<button class="btn btn-sm btn-green" onclick="indResume('${x.id}')">恢复</button>`:''}
-          <button class="btn btn-sm btn-outline" onclick="editCard('${x.id}')">改卡</button></div></div>`;
-    }).join('')||'<div class="card sub tc">暂无学员</div>';
+  else if(tab=='list'){
+    for(var i=0;i<s.length;i++){var x=s[i],r=x.type=='monthly'?Math.max(0,x.days-dd(x.start||t,t)):(x.sessions||0)-(x.used||0);
+    var bg=x.st=='active'?'bg-green':x.st=='paused'?'bg-orange':'bg-red';
+    var bt=x.st=='active'?'进行中':x.st=='paused'?'已暂停':'已过期';
+    o+='<div class="card"><div class="row-bw"><div><strong>'+x.name+'</strong><span class="sub"> '+x.phone+'</span></div><span class="badge '+bg+'">'+bt+'</span></div>';
+    o+='<div class="sub mt8">'+(x.type=='monthly'?'包月 · '+r+'天 / '+x.days+'天':'次卡 · '+r+'次 / '+(x.sessions||0)+'次')+' · ¥'+(x.price||0)+' · '+(x.start||'')+'</div>';
+    o+='<div class="row mt8">';
+    if(x.st=='active')o+='<button class="btn btn-sm btn-orange" onclick="indPause(\''+x.id+'\')">请假</button><button class="btn btn-sm btn-green" onclick="ckin(\''+x.id+'\')">签到</button>';
+    if(x.st=='paused')o+='<button class="btn btn-sm btn-green" onclick="indResume(\''+x.id+'\')">恢复</button>';
+    o+='<button class="btn btn-sm btn-outline" onclick="ec(\''+x.id+'\')">改卡</button></div></div>'}
+    if(!s.length)o+='<div class="card sub tc">暂无学员，点"添加"</div>';
   }
-  else if(ctab==='add'){
-    nav+=h`<div class="card"><h3>+ 添加学员</h3>
-      <input id="aname" placeholder="姓名 *"><input id="aphone" type="tel" placeholder="手机号" maxlength="11">
-      <div class="row"><select id="atype" class="col"><option value="monthly">包月卡</option><option value="session">次卡</option></select>
-      <input id="adays" type="number" placeholder="天数/次数" class="col" value="30"><input id="aprice" type="number" placeholder="价格" class="col"></div>
-      <button class="btn btn-pri mt-8" onclick="addStudent()">保存</button></div>`;
+  else if(tab=='add'){
+    o+='<div class="card"><h3>添加学员</h3>';
+    o+='<input id="an" placeholder="姓名"><input id="ap" type="tel" placeholder="手机号" maxlength="11">';
+    o+='<div class="row"><select id="at" class="col"><option value="monthly">包月卡</option><option value="session">次卡</option></select>';
+    o+='<input id="ad" type="number" placeholder="天数/次数" class="col" value="30"><input id="ar" type="number" placeholder="价格" class="col"></div>';
+    o+='<button class="btn btn-blue mt8" onclick="addS()">保存</button></div>';
   }
-  else if(ctab==='pause'){
-    nav+=h`<div class="card"><h3>👥 集体操作</h3><div class="row"><button class="btn btn-orange col" onclick="groupPause()">⏸ 集体请假</button><button class="btn btn-green col" onclick="groupResume()">▶ 集体恢复</button></div></div>
-      <div class="card"><h3>⏸ 暂停中</h3>${paused.map(x=>h`<div class="list-row"><span><strong>${x.name}</strong><span class="sub"> ${x.phone}</span></span><button class="btn btn-sm btn-green" onclick="indResume('${x.id}')">恢复</button></div>`).join('')||'<div class="sub tc">无</div>'}</div>
-      <div class="card"><h3>📋 本月请假记录</h3>${d.l.filter(l=>l.create&&l.create.startsWith(now().substring(0,7))).map(l=>{let st=s.find(x=>x.id===l.sid);return h`<div class="list-row"><span>${st?st.name:'全员'}<span class="sub">${l.type==='group'?'集体':'个人'} · ${l.create}</span></span></div>`}).join('')||'<div class="sub tc">无</div>'}</div>`;
+  else if(tab=='pause'){
+    o+='<div class="card"><h3>集体操作</h3><div class="row"><button class="btn btn-orange col" onclick="gp()">⏸ 集体请假</button><button class="btn btn-green col" onclick="gr()">▶ 集体恢复</button></div></div>';
+    o+='<div class="card"><h3>暂停中</h3>';
+    for(var i=0;i<ps.length;i++)o+='<div class="lr"><span><strong>'+ps[i].name+'</strong><span class="sub"> '+ps[i].phone+'</span></span><button class="btn btn-sm btn-green" onclick="indResume(\''+ps[i].id+'\')">恢复</button></div>';
+    if(!ps.length)o+='<div class="sub tc">无</div>';o+='</div>';
+    o+='<div class="card"><h3>本月请假记录</h3>';
+    var lv=d.l.filter(function(l){return l.create&&l.create.substring(0,7)==td().substring(0,7);});
+    for(var i=0;i<lv.length;i++){var st=s.find(function(v){return v.id==lv[i].sid});o+='<div class="lr"><span>'+(st?st.name:'全员')+'<span class="sub">'+(lv[i].type=='group'?'集体':'个人')+' · '+lv[i].create+'</span></span></div>'}
+    if(!lv.length)o+='<div class="sub tc">无</div>';o+='</div>';
   }
-  nav+='</div>';
-  return nav;
+  o+='</div>';return o;
 }
 
-function studentUI(d){
-  let s=d.s.find(x=>x.phone===sphone);
-  if(!s) return h`<div class="container" style="padding-top:60px"><div class="card tc"><div style="font-size:48px">😿</div><div style="font-size:16px;margin-top:12px">未找到学员</div><div class="sub mt-8">手机号：${sphone}</div><button class="btn btn-outline mt-12" onclick="page='login';render()">返回</button></div></div>`;
-  let rem=s.type==='monthly'?Math.max(0,s.days-ddiff(s.start||now(),now())):(s.sessions||0)-(s.used||0);
-  let today=now(),checked=d.c.some(x=>x.sid===s.id&&x.date===today);
-  let ml=d.l.filter(x=>x.sid===s.id&&x.create&&x.create.startsWith(now().substring(0,7))).length,mxl=2;
-  return h`<div class="container">
-    <div class="row-bw mb-12"><div style="font-size:20px;font-weight:700">👤 ${s.name}</div><button class="btn btn-sm btn-outline" onclick="page='login';render()">退出</button></div>
-    <div class="card tc"><div class="sub">${s.type==='monthly'?'包月卡':'次卡'} · ${s.st==='active'?'进行中':s.st==='paused'?'已暂停':'已过期'}</div>
-      <div style="font-size:56px;font-weight:800;margin:8px 0;color:${s.st==='active'?'var(--green)':'var(--orange)'}">${rem}<span style="font-size:18px;font-weight:400">${s.type==='monthly'?'天':'次'}</span></div>
-      <div class="sub">总${s.type==='monthly'?'天数':'次数'}：${s.type==='monthly'?s.days+'天':(s.sessions||0)+'次'} · ¥${s.price||0} · ${s.start||''}</div>
-    </div>
-    ${s.st==='active'?h`<div class="row" style="gap:10px"><button class="btn btn-green col" ${checked?'disabled':''} onclick="doCheckin('${s.id}')">${checked?'今日已签到':'✅ 打卡签到'}</button><button class="btn btn-orange col" ${ml>=mxl?'disabled':''} onclick="stuLeave('${s.id}')">📝 请假 (${ml}/${mxl})</button></div>${ml>=mxl?h`<div class="sub tc mt-8">本月请假次数已用完</div>`:''}`:''}
-  </div>`;
+function stuUI(d){
+  var s=d.s.find(function(x){return x.phone==sp});
+  if(!s)return'<div class="container" style="padding-top:60px"><div class="card tc"><div style="font-size:40px">😿</div><div style="font-size:16px;margin-top:10px">未找到学员</div><div class="sub mt8">手机号：'+sp+'</div><button class="btn btn-outline mt12" onclick="pg=\'login\';go()">返回</button></div></div>';
+  var r=s.type=='monthly'?Math.max(0,s.days-dd(s.start||td(),td())):(s.sessions||0)-(s.used||0);
+  var td3=td(),ck=d.c.some(function(x){return x.sid==s.id&&x.date==td3});
+  var ml=d.l.filter(function(x){return x.sid==s.id&&x.create&&x.create.substring(0,7)==td().substring(0,7)}).length,mxl=2;
+  var o='<div class="container"><div class="row-bw mb12"><div style="font-size:20px;font-weight:700">👤 '+s.name+'</div><button class="btn btn-sm btn-outline" onclick="pg=\'login\';go()">退出</button></div>';
+  o+='<div class="card tc"><div class="sub">'+(s.type=='monthly'?'包月卡':'次卡')+' · '+(s.st=='active'?'进行中':s.st=='paused'?'已暂停':'已过期')+'</div>';
+  o+='<div style="font-size:50px;font-weight:800;margin:8px 0;color:'+(s.st=='active'?'#27ae60':'#e67e22')+'">'+r+'<span style="font-size:16px">'+(s.type=='monthly'?'天':'次')+'</span></div>';
+  o+='<div class="sub">总'+(s.type=='monthly'?'天数':'次数')+'：'+(s.type=='monthly'?s.days+'天':(s.sessions||0)+'次')+' · ¥'+(s.price||0)+' · '+(s.start||'')+'</div></div>';
+  if(s.st=='active'){o+='<div class="row"><button class="btn btn-green col" '+(ck?'disabled':'')+' onclick="ckin(\''+s.id+'\')">'+(ck?'今日已签到':'✅ 打卡签到')+'</button><button class="btn btn-orange col" '+(ml>=mxl?'disabled':'')+' onclick="sl(\''+s.id+'\')">📝 请假 ('+ml+'/'+mxl+')</button></div>';if(ml>=mxl)o+='<div class="sub tc mt8">本月请假次数已用完</div>'}
+  o+='</div>';return o;
 }
 
-function cLogin(){let d=R();if(document.getElementById('cpwdIn').value===d.p){page='coach';render()}else document.getElementById('cmsg').textContent='密码错误'}
-function sLogin(){let p=document.getElementById('sphoneIn').value.trim();if(R().s.some(x=>x.phone===p)){sphone=p;page='student';render()}else document.getElementById('smsg').textContent='未找到该号码'}
-function addStudent(){let d=R();let n=document.getElementById('aname').value.trim();if(!n)return;let ph=document.getElementById('aphone').value.trim(),tp=document.getElementById('atype').value,nd=parseInt(document.getElementById('adays').value)||30,pr=parseFloat(document.getElementById('aprice').value)||0;d.s.push({id:uid(),name:n,phone:ph,type:tp,days:tp==='monthly'?nd:0,sessions:tp==='session'?nd:0,used:0,price:pr,start:now(),st:'active'});W(d);render()}
-function doCheckin(sid){let d=R(),s=d.s.find(x=>x.id===sid);if(!s)return;let td=now();if(s.type==='monthly'){let ws=new Date(td);ws.setDate(ws.getDate()-ws.getDay());let we=new Date(ws);we.setDate(we.getDate()+7);if(d.c.filter(x=>x.sid===sid&&x.date>=fmtd(ws)&&x.date<fmtd(we)).length>=4)return}if(s.type==='session'&&(s.sessions-(s.used||0))<=0)return;s.used=(s.used||0)+1;d.c.push({id:uid(),sid,date:td});if(s.type==='monthly'&&ddiff(s.start,td)>=s.days)s.st='expired';if(s.type==='session'&&(s.sessions-s.used)<=0)s.st='expired';W(d);render()}
-function indPause(sid){let d=R();d.l.push({id:uid(),sid,type:'individual',create:now()});let s=d.s.find(x=>x.id===sid);if(s)s.st='paused';W(d);render()}
-function indResume(sid){let d=R();d.s.find(x=>x.id===sid).st='active';W(d);render()}
-function groupPause(){let d=R();d.l.push({id:uid(),sid:'',type:'group',create:now()});d.s.forEach(x=>{if(x.st==='active')x.st='paused'});W(d);render()}
-function groupResume(){let d=R();d.s.forEach(x=>{if(x.st==='paused')x.st='active'});W(d);render()}
-function stuLeave(sid){let d=R(),m=now().substring(0,7);if(d.l.filter(x=>x.sid===sid&&x.create&&x.create.startsWith(m)).length>=2)return;d.l.push({id:uid(),sid,type:'individual',create:now()});let s=d.s.find(x=>x.id===sid);if(s)s.st='paused';W(d);render()}
-function extend(sid){let d=R(),s=d.s.find(x=>x.id===sid);if(s){s.start=now();s.st='active';W(d);render()}}
-function editCard(sid){let d=R(),s=d.s.find(x=>x.id===sid);if(!s)return;let nd=prompt(s.type==='monthly'?'修改天数（当前'+s.days+'天）：':'修改次数（当前'+s.sessions+'次）：',s.type==='monthly'?s.days:s.sessions);if(nd!==null){let v=parseInt(nd);if(v>0){if(s.type==='monthly')s.days=v;else{s.sessions=v;s.used=Math.min(s.used,v)}s.st='active';W(d);render()}}}
-
-render();
-</script>
-</body>
-</html>
+function cLogin(){var d=R();if(document.getElementById('cpIn').value==d.p){pg='coach';go()}else document.getElementById('cm').textContent='密码错误'}
+function sLogin(){var p=document.getElementById('spIn').value.trim();if(R().s.some(function(x){return x.phone==p})){sp=p;pg='student';go()}else document.getElementById('sm').textContent='未找到该号码'}
+function addS(){var d=R(),n=document.getElementById('an').value.trim();if(!n)return;var ph=document.getElementById('ap').value.trim(),tp=document.getElementById('at').value,nd=parseInt(document.getElementById('ad').value)||30,pr=parseFloat(document.getElementById('ar').value)||0;d.s.push({id:id(),name:n,phone:ph,type:tp,days:tp=='monthly'?nd:0,sessions:tp=='session'?nd:0,used:0,price:pr,start:td(),st:'active'});W(d);go()}
+function ckin(sid){var d=R(),s=d.s.find(function(x){return x.id==sid});if(!s)return;var t3=td();if(s.type=='monthly'){var ws=new Date(t3);ws.setDate(ws.getDate()-ws.getDay());var we=new Date(ws);we.setDate(we.getDate()+7);if(d.c.filter(function(x){return x.sid==sid&&x.date>=td2(ws)&&x.date<td2(we)}).length>=4)return}if(s.type=='session'&&(s.sessions-(s.used||0))<=0)return;s.used=(s.used||0)+1;d.c.push({id:id(),sid:sid,date:t3});if(s.type=='monthly'&&dd(s.start,t3)>=s.days)s.st='expired';if(s.type=='session'&&(s.sessions-s.used)<=0)s.st='expired';W(d);go()}
+function indPause(sid){var d=R();d.l.push({id:id(),sid:sid,type:'individual',create:td()});var s=d.s.find(function(x){return x.id==sid});if(s)s.st='paused';W(d);go()}
+function indResume(sid){var d=R(),s=d.s.find(function(x){return x.id==sid});if(s)s.st='active';W(d);go()}
+function gp(){var d=R();d.l.push({id:id(),sid:'',type:'group',create:td()});d.s.forEach(function(x){if(x.st=='active')x.st='paused'});W(d);go()}
+function gr(){var d=R();d.s.forEach(function(x){if(x.st=='paused')x.st='active'});W(d);go()}
+function sl(sid){var d=R();if(d.l.filter(function(x){return x.sid==sid&&x.create&&x.create.substring(0,7)==td().substring(0,7)}).length>=2)return;d.l.push({id:id(),sid:sid,type:'individual',create:td()});var s=d.s.find(function(x){return x.id==sid});if(s)s.st='paused';W(d);go()}
+function extend(sid){var d=R(),s=d.s.find(function(x){return x.id==sid});if(s){s.start=td();s.st='active';W(d);go()}}
+function ec(sid){var d=R(),s=d.s.find(function(x){return x.id==sid});if(!s)return;var nd=prompt(s.type=='monthly'?'修改天数（当前'+s.days+'天）：':'修改次数（当前'+s.sessions+'次）：',s.type=='monthly'?s.days:s.sessions);if(nd!==null){var v=parseInt(nd);if(v>0){if(s.type=='monthly')s.days=v;else{s.sessions=v;s.used=Math.min(s.used,v)}s.st='active';W(d);go()}}}
+go();
+</script></body></html>
