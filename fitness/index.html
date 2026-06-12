@@ -91,7 +91,7 @@ function coachUI(d){
     o+='<div class="row mt8">';
     if(x.st=='active')o+='<button class="btn btn-sm btn-orange" onclick="indPause(\''+x.id+'\')">请假</button><button class="btn btn-sm btn-green" onclick="ckin(\''+x.id+'\')">签到</button>';
     if(x.st=='paused')o+='<button class="btn btn-sm btn-green" onclick="indResume(\''+x.id+'\')">恢复</button>';
-    o+='<button class="btn btn-sm btn-outline" onclick="ec(\''+x.id+'\')">改卡</button></div></div>'}
+    o+='<button class="btn btn-sm btn-outline" onclick="ec(\''+x.id+'\')">改卡</button><button class="btn btn-sm btn-red" onclick="delS(\''+x.id+'\')">删除</button></div></div>'}
     if(!s.length)o+='<div class="card sub tc">暂无学员，点"添加"</div>';
   }
   else if(tab=='add'){
@@ -139,5 +139,6 @@ function gr(){var d=R();d.s.forEach(function(x){if(x.st=='paused')x.st='active'}
 function sl(sid){var d=R();if(d.l.filter(function(x){return x.sid==sid&&x.create&&x.create.substring(0,7)==td().substring(0,7)}).length>=2)return;d.l.push({id:id(),sid:sid,type:'individual',create:td()});var s=d.s.find(function(x){return x.id==sid});if(s)s.st='paused';W(d);go()}
 function extend(sid){var d=R(),s=d.s.find(function(x){return x.id==sid});if(s){s.start=td();s.st='active';W(d);go()}}
 function ec(sid){var d=R(),s=d.s.find(function(x){return x.id==sid});if(!s)return;var nd=prompt(s.type=='monthly'?'修改天数（当前'+s.days+'天）：':'修改次数（当前'+s.sessions+'次）：',s.type=='monthly'?s.days:s.sessions);if(nd!==null){var v=parseInt(nd);if(v>0){if(s.type=='monthly')s.days=v;else{s.sessions=v;s.used=Math.min(s.used,v)}s.st='active';W(d);go()}}}
+function delS(sid){if(confirm('确认删除该学员？')){var d=R();d.s=d.s.filter(function(x){return x.id!=sid});d.c=d.c.filter(function(x){return x.sid!=sid});d.l=d.l.filter(function(x){return x.sid!=sid});W(d);go()}}
 go();
 </script></body></html>
