@@ -124,7 +124,7 @@ function stuUI(d){
   o+='<div class="card tc"><div class="sub">'+(s.type=='monthly'?'包月卡':'次卡')+' · '+(s.st=='active'?'进行中':s.st=='paused'?'已暂停':'已过期')+'</div>';
   o+='<div style="font-size:50px;font-weight:800;margin:8px 0;color:'+(s.st=='active'?'#27ae60':'#e67e22')+'">'+r+'<span style="font-size:16px">'+(s.type=='monthly'?'天':'次')+'</span></div>';
   o+='<div class="sub">总'+(s.type=='monthly'?'天数':'次数')+'：'+(s.type=='monthly'?s.days+'天':(s.sessions||0)+'次')+' · ¥'+(s.price||0)+' · '+(s.start||'')+'</div></div>';
-  if(s.st=='active'){o+='<div class="row"><button class="btn btn-green col" '+(ck?'disabled':'')+' onclick="ckin(\''+s.id+'\')">'+(ck?'今日已签到':'✅ 打卡签到')+'</button><button class="btn btn-orange col" '+(ml>=mxl?'disabled':'')+' onclick="sl(\''+s.id+'\')">📝 请假 ('+ml+'/'+mxl+')</button></div>';if(ml>=mxl)o+='<div class="sub tc mt8">本月请假次数已用完</div>'}
+  if(s.st=='active'){o+='<div class="row"><button class="btn btn-green col" '+(ck?'disabled':'')+' onclick="ckin(\''+s.id+'\')">'+(ck?'今日已签到':'✅ 打卡签到')+'</button><button class="btn btn-orange col" '+(ml>=mxl||ck?'disabled':'')+' onclick="sl(\''+s.id+'\')">📝 请假 ('+ml+'/'+mxl+')</button></div>';if(ml>=mxl)o+='<div class="sub tc mt8">本月请假次数已用完</div>';if(ck)o+='<div class="sub tc mt8">今日已签到，不可请假</div>'}
   o+='</div>';return o;
 }
 
