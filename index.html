@@ -325,8 +325,8 @@ footer a{color:var(--sub);text-decoration:underline}
       </div>
       <div class="word-preview" id="word2pdf-preview"></div>
       <div class="actions" id="word2pdf-actions" style="display:none">
-        <button class="btn btn-primary" id="word2pdf-btn" data-i18n="word2pdf.btnDownload">Download HTML</button>
-        <span style="font-size:12px;color:var(--sub)" data-i18n="word2pdf.printHint">Downloads an HTML file — open it and use Print → Save as PDF</span>
+        <button class="btn btn-primary" id="word2pdf-btn" data-i18n="word2pdf.btnDownload">Download as PDF</button>
+        <span style="font-size:12px;color:var(--sub)" data-i18n="word2pdf.printHint">Opens print dialog — choose "Save as PDF". On mobile, downloads HTML file.</span>
       </div>
     </div>
   </div>
@@ -449,7 +449,7 @@ var _i18n = {
     compress: { title: 'Compress PDF', desc: 'Reduce PDF file size. Choose a balance between quality and compression.', dropMain: 'Choose a PDF to compress', dropSub: 'Larger files may take a few seconds', quality: 'Quality:', qualityMax: 'Maximum (smallest file)', qualityMed: 'Medium (balanced)', qualityLight: 'Light (text stays selectable)', qualityHint: 'Maximum = smallest file, Medium = balanced, Light = keeps text selectable', originalSize: 'Original:', btnCompress: 'Compress PDF', resultTitle: 'Compression Complete', btnDownload: 'Download Compressed PDF', compressing: 'Compressing…', reduced: 'reduced', increased: 'increased', fail: 'Compress failed: ' },
     pdf2jpg: { title: 'PDF to JPG', desc: 'Convert each page of your PDF into a high-quality JPG image.', dropMain: 'Choose a PDF to convert', dropSub: 'Each page becomes a separate JPG image', quality: 'Quality:', scale: 'Scale:', btnConvert: 'Convert to JPG', resultTitle: 'Conversion Complete', btnDownload: 'Download All Images (ZIP)', info: 'Converted {0} pages at {1}×, {2}% quality', converting: 'Converting…', fail: 'Conversion failed: ', morePages: '+{0} more pages' },
     unlock: { title: 'Unlock PDF', desc: 'Remove password protection and restrictions from your PDF. Only for PDFs you own.', dropMain: 'Choose a PDF to unlock', dropSub: 'PDFs with owner restrictions can be unlocked instantly', pwLabel: 'This PDF requires a password:', pwPlaceholder: 'PDF password', btnUnlock: 'Unlock PDF', resultTitle: 'PDF Unlocked', btnDownload: 'Download Unlocked PDF', info: 'Restrictions removed — {0}', unlocking: 'Unlocking…', wrongPw: 'Wrong password or unable to decrypt', fail: 'Unlock failed: ' },
-    word2pdf: { title: 'Word to PDF', desc: 'Convert Word documents (.docx) to HTML for PDF printing. Preview first, then download the HTML file.', dropMain: 'Choose a Word document', dropSub: '.docx files only', btnDownload: 'Download HTML', printHint: 'Open the downloaded file and use Print → Save as PDF', popupBlocked: 'Download failed. Please try again.', readFail: 'Failed to read Word document: ' },
+    word2pdf: { title: 'Word to PDF', desc: 'Convert Word documents (.docx) to PDF. Preview, then print to PDF via browser dialog.', dropMain: 'Choose a Word document', dropSub: '.docx files only', btnDownload: 'Download as PDF', printHint: 'Opens print dialog — choose Save as PDF. Mobile falls back to HTML download.', popupBlocked: 'Pop-up blocked! On mobile, HTML file will download instead.', readFail: 'Failed to read Word document: ' },
     pdf2word: { title: 'PDF to Word', desc: 'Convert PDF pages to a Word document with exact layout preserved. Each page is rendered as a high-resolution image embedded in the document — tables, formatting, fonts, and images stay exactly as they appear.', dropMain: 'Choose a PDF to convert', dropSub: 'Each page will be embedded as a high-res image in the Word document', resultTitle: 'Conversion Complete', btnDownload: 'Download Word Document (.doc)', info: 'Converted {0} pages to Word', fail: 'PDF to Word failed: ', morePages: '+{0} more pages' },
     footer: { local: 'All processing is done locally in your browser — your files are never uploaded to any server.', privacy: 'Privacy Policy', terms: 'Terms of Service', contact: 'Contact' },
     privacy: { title: 'Privacy Policy', last: 'Last updated: June 2026', h1: '1. Data Collection', p1: 'This site does NOT collect, store, or transmit any of your files or personal data. All PDF processing happens entirely in your browser using client-side JavaScript. Your files never leave your device.', h2: '2. Cookies & Advertising', p2: 'We use Google AdSense to display advertisements. Google uses cookies to serve ads based on your prior visits to this or other websites.', p3: 'You may opt out of personalized advertising by visiting Google Ads Settings.', h3: '3. Third-Party Services', p4: 'This site uses Google AdSense for advertisements and CDN libraries (unpkg, cdnjs) for PDF processing functionality.', h4: '4. Contact', p5: 'If you have questions about this Privacy Policy, please contact us through the Contact page.' },
@@ -464,7 +464,7 @@ var _i18n = {
     compress: { title: '压缩 PDF', desc: '减小 PDF 文件体积，在画质和压缩率之间取得平衡。', dropMain: '选择要压缩的 PDF', dropSub: '大文件可能需要几秒钟', quality: '画质：', qualityMax: '极限压缩（体积最小）', qualityMed: '标准压缩（推荐）', qualityLight: '轻度压缩（可选中文字）', qualityHint: '极限 = 体积最小 | 标准 = 画质与体积平衡 | 轻度 = 保留文字可选', originalSize: '原始大小：', btnCompress: '开始压缩', resultTitle: '压缩完成', btnDownload: '下载压缩文件', compressing: '压缩中…', reduced: '减少', increased: '增加', fail: '压缩失败：' },
     pdf2jpg: { title: 'PDF 转图片', desc: '将 PDF 每一页转换为高质量 JPG 图片。', dropMain: '选择要转换的 PDF', dropSub: '每页生成一张独立的 JPG 图片', quality: '画质：', scale: '缩放：', btnConvert: '开始转换', resultTitle: '转换完成', btnDownload: '下载全部图片 (ZIP)', info: '已转换 {0} 页 | {1}× 缩放 | {2}% 画质', converting: '转换中…', fail: '转换失败：', morePages: '+ 还有 {0} 页' },
     unlock: { title: '解锁 PDF', desc: '移除 PDF 的密码保护和使用限制。仅用于您拥有权限的文件。', dropMain: '选择要解锁的 PDF', dropSub: '设有密码保护的 PDF 请输入密码解锁', pwLabel: '请输入 PDF 密码：', pwPlaceholder: '输入密码', btnUnlock: '开始解锁', resultTitle: '解锁完成', btnDownload: '下载解锁文件', info: '密码保护已移除 — {0}', unlocking: '解锁中…', wrongPw: '密码错误，请重试', fail: '解锁失败：' },
-    word2pdf: { title: 'Word 转 PDF', desc: '将 Word 文档 (.docx) 转为 HTML 文件。预览无误后下载，用浏览器打开后打印即可存为 PDF。', dropMain: '选择 Word 文档', dropSub: '仅支持 .docx 格式', btnDownload: '下载 HTML', printHint: '下载后打开文件，使用打印功能即可存为 PDF', popupBlocked: '下载失败，请重试', readFail: '无法读取 Word 文档：' },
+    word2pdf: { title: 'Word 转 PDF', desc: '将 Word 文档 (.docx) 转为 PDF。先预览，再通过浏览器打印对话框保存。', dropMain: '选择 Word 文档', dropSub: '仅支持 .docx 格式', btnDownload: '下载为 PDF', printHint: '弹出打印窗口，选择「另存为 PDF」。手机端弹窗被拦截时自动下载 HTML 文件。', popupBlocked: '弹窗被拦截！手机端将自动下载 HTML 文件。', readFail: '无法读取 Word 文档：' },
     pdf2word: { title: 'PDF 转 Word', desc: '将 PDF 每页高保真渲染后嵌入 Word 文档。表格、排版、字体、图片全部原样保留。', dropMain: '选择要转换的 PDF', dropSub: '每页渲染为高清图片嵌入 Word，保留原始排版', resultTitle: '转换完成', btnDownload: '下载 Word 文档 (.doc)', info: '已将 {0} 页转换为 Word 文档', fail: '转换失败：', morePages: '+ 还有 {0} 页' },
     footer: { local: '所有处理均在浏览器本地完成 — 您的文件不会上传到任何服务器。', privacy: '隐私政策', terms: '服务条款', contact: '联系我们' },
     privacy: { title: '隐私政策', last: '最后更新：2026年6月', h1: '1. 数据收集', p1: '本站不会收集、存储或传输您的任何文件或个人数据。所有PDF处理均在您的浏览器中使用客户端JavaScript完成。您的文件永远不会离开您的设备。', h2: '2. Cookie与广告', p2: '我们使用Google AdSense展示广告。Google使用Cookie根据您之前访问本站或其他网站的记录来投放个性化广告。', p3: '您可以通过访问Google广告设置来退出个性化广告。', h3: '3. 第三方服务', p4: '本站使用Google AdSense展示广告，使用CDN库（unpkg、cdnjs）加载PDF处理功能。', h4: '4. 联系方式', p5: '如果您对本隐私政策有疑问，请通过联系页面与我们联系。' },
@@ -920,9 +920,17 @@ setupDropzone('word2pdf-drop', 'word2pdf-input', async function(files) {
 });
 document.getElementById('word2pdf-btn').addEventListener('click', function() {
   var c = document.getElementById('word2pdf-preview').innerHTML;
-  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Word to PDF</title><style>body{font-family:sans-serif;line-height:1.8;max-width:700px;margin:40px auto;padding:0 20px;color:#000}h1,h2,h3{margin:12px 0 6px}p{margin:6px 0}table{border-collapse:collapse;width:100%;margin:8px 0}td,th{border:1px solid #ccc;padding:6px}img{max-width:100%}@media print{body{margin:0;padding:0}}</style></head><body>' + c + '</body></html>';
-  var blob = new Blob([html], { type: 'text/html' });
-  saveAs(blob, 'converted.html');
+  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Print to PDF</title><style>body{font-family:sans-serif;line-height:1.8;max-width:700px;margin:40px auto;padding:0 20px;color:#000}h1,h2,h3{margin:12px 0 6px}p{margin:6px 0}table{border-collapse:collapse;width:100%;margin:8px 0}td,th{border:1px solid #ccc;padding:6px}img{max-width:100%}@media print{body{margin:0;padding:0}}</style></head><body>' + c + '</body></html>';
+  var w = window.open('', '_blank', 'width=800,height=600');
+  if (!w) {
+    var blob = new Blob([html], { type: 'text/html' });
+    saveAs(blob, 'converted.html');
+    return;
+  }
+  w.document.open();
+  w.document.write(html);
+  w.document.close();
+  setTimeout(function() { w.focus(); w.print(); }, 300);
 });
 </script>
 
