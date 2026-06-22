@@ -856,7 +856,9 @@ document.getElementById('pdf2jpg-btn').addEventListener('click', async function(
       var vp = pg.getViewport({ scale: sc });
       var cv = document.createElement('canvas'); cv.width = vp.width; cv.height = vp.height;
       await pg.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise;
-      zip.file('page_' + (i + 1) + '.jpg', await new Promise(function(r) { cv.toBlob(r, 'image/jpeg', q); }));
+      var jpgBlob = await new Promise(function(r) { cv.toBlob(function(b) { r(b); }, 'image/jpeg', q); });
+      if (!jpgBlob) jpgBlob = await new Promise(function(r) { cv.toBlob(function(b) { r(b); }, 'image/png'); });
+      zip.file('page_' + (i + 1) + (jpgBlob && jpgBlob.type === 'image/png' ? '.png' : '.jpg'), jpgBlob);
       setProgress('pdf2jpg-progress', 5 + ((i + 1) / pdf2jpgPageCount) * 90);
     }
     var zb = await zip.generateAsync({ type: 'blob' }); setProgress('pdf2jpg-progress', 100);
