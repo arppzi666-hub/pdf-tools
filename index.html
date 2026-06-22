@@ -147,6 +147,10 @@ footer a{color:var(--sub);text-decoration:underline}
   <button class="lang-btn" id="lang-toggle" title="Switch language">中文</button>
 </header>
 
+<div class="act-bar" id="act-bar">
+  <span class="act-msg" id="act-msg">🔒 下载功能需激活后使用</span>
+  <button class="act-btn" id="act-btn">立即激活 - ¥19.9</button>
+</div>
 
 <main>
   <section class="hero">
@@ -405,6 +409,30 @@ footer a{color:var(--sub);text-decoration:underline}
     <p style="margin-top:12px"><strong>Email:</strong> <a href="mailto:arppzi666@gmail.com">arppzi666@gmail.com</a></p>
     <p><strong>GitHub:</strong> <a href="https://github.com/arppzi666-hub/pdf-tools" target="_blank" rel="noopener">github.com/arppzi666-hub/pdf-tools</a></p>
     <p style="margin-top:16px;color:var(--sub);font-size:13px" data-i18n="contact.p2">We typically respond within 24-48 hours.</p>
+  </div>
+</div>
+
+<!-- Activation Modal -->
+<div class="act-modal" id="act-modal">
+  <div class="act-card">
+    <h3>激活 PDFtools</h3>
+    <p style="color:#64748b;font-size:14px;margin-bottom:0">永久使用，不限次数，一码支持3台设备</p>
+    <div class="price">¥19.9</div>
+    <div class="price-sub">一次付费，永久使用</div>
+    <div class="key-grid" id="key-grid">
+      <input maxlength="4" placeholder="XXXX" data-idx="0">
+      <span style="font-size:20px;color:#94a3b8;align-self:center">-</span>
+      <input maxlength="4" placeholder="XXXX" data-idx="1">
+      <span style="font-size:20px;color:#94a3b8;align-self:center">-</span>
+      <input maxlength="4" placeholder="XXXX" data-idx="2">
+    </div>
+    <div class="act-err" id="act-err">激活码无效，请检查后重试</div>
+    <div class="act-done" id="act-done">激活成功！现在可以下载了</div>
+    <div class="btn-row">
+      <button class="btn-buy" id="act-submit">激活</button>
+      <button class="btn-close" id="act-close">稍后再说</button>
+    </div>
+    <p style="font-size:11px;color:#94a3b8;margin-top:16px">购买激活码请联系客服</p>
   </div>
 </div>
 
